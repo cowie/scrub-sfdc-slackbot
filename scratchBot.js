@@ -116,6 +116,9 @@ controller.on('rtm_close',function(bot) {
   // you may want to attempt to re-open
 });
 
+
+
+
 //respond to hello
 controller.hears(['hello', 'hi'],earsEverywhere,function(bot,message) {
 
@@ -130,6 +133,14 @@ controller.hears(['hello', 'hi'],earsEverywhere,function(bot,message) {
       }
     })
 });
+
+controller.hears(['chuck norris'], earsEverywhere, function(bot, message){
+  var options = {host: 'http://api.icndb.com', path:'/jokes/random', method: 'GET'}
+  http.request(options, function(res){
+    bot.reply(message, res.value.joke);
+  });
+})
+
 
 controller.hears(['call me (.*)'], earsEverywhere, function(bot, message){
   var matches = message.text.match(/call me (.*)/i);
@@ -189,6 +200,48 @@ controller.hears(['add admin (.*)'], 'direct_message', function(bot, message){
     }
   });
  
+});
+
+controller.hears(['remove admin (.*)'], 'direct_message', function(bot, message){
+  var matches = message.text.match(/add admin (.*)/i);
+  var name = matches[1];
+  var userID = null;
+  //admin check
+  var isAdmin = false;
+  controller.storage.users.get(message.user, function(err, user){
+    isAdmin = user.admin;
+  });
+  if(!isAdmin){
+    bot.reply(message, "YOU AREN'T MY SUPERVISOR");
+    return;
+  }
+
+  bot.api.users.list({}, function(err, response){
+    if(err){
+      bot.reply(message, "sorry, error looking up the user list, try again later");
+    }else{
+      console.log(response.members);
+      for(var x=0;x<response.members.length;x++){
+        var member = response.members[x];
+        console.log(response.members[x]);
+        console.log("Checking " + name + " against " + member.id + " " + member.name);
+        if(member.name == name){
+          userID = member.id;
+          break;
+        }
+      }
+      
+      if(userID == null){
+        bot.reply(message, "Your user, " + name + " wasn't found in the team.");
+      }
+      else{
+        controller.storage.users.save({id:userID, admin:false, name:name}, function(err, user){
+        bot.reply(message, "Success, " + name + ", under ID " + userID + " was removed as an admin.");
+        });
+      }
+    }
+  });
+
 });
 
 
