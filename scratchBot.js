@@ -159,7 +159,7 @@ controller.hears(['add admin (.*)'], 'direct_message', function(bot, message){
       console.log(response.members);
       for(var member in response.members){
         console.log(member)
-        console.log("Checking " name + " against " member.id + " " + member.name);
+        console.log("Checking " + name + " against " + member.id + " " + member.name);
         if(member.name == name){
           userID = member.id;
           break;
