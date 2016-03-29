@@ -311,8 +311,10 @@ controller.hears(['list T1 cases'], earsEverywhere, function(bot,message){
             console.log('YUPPPP');
             bot.reply(message, "Here are all the Tier 1 queue cases currently");
             var row;
+            console.log(result.rows);
             for(var x=0; x<result.rows.length; x++){
               row = result.rows[x];
+              console.log(row);
               bot.reply(message, "*: " + row.CaseNumber + " | " + row.Status + " | " + row.Subject);
             
             }
