@@ -152,6 +152,17 @@ controller.hears(['add admin (.*)'], 'direct_message', function(bot, message){
   var userID = null;
   console.log(name);
   console.log(message);
+
+  //admin check
+  var isAdmin = false;
+  controller.storage.users.get(message.user, function(err, user){
+    isAdmin = user.admin;
+  });
+  if(!isAdmin){
+    bot.reply(message, "YOU AREN'T MY SUPERVISOR");
+    return;
+  }
+
   bot.api.users.list({}, function(err, response){
     if(err){
       bot.reply(message, "sorry, error looking up the user list, try again later");
@@ -171,7 +182,7 @@ controller.hears(['add admin (.*)'], 'direct_message', function(bot, message){
         bot.reply(message, "Your user, " + name + " wasn't found in the team.");
       }
       else{
-        controller.storage.users.save({id:userID, admin:true}, function(err, user){
+        controller.storage.users.save({id:userID, admin:true, name:name}, function(err, user){
         bot.reply(message, "Success, " + name + ", under ID " + userID + " was logged as an admin.");
         });
       }
@@ -182,13 +193,17 @@ controller.hears(['add admin (.*)'], 'direct_message', function(bot, message){
 
 
 controller.hears(['am I an admin'], 'direct_message', function(bot, message){
+  //admin check
+  var isAdmin = false;
   controller.storage.users.get(message.user, function(err, user){
-    if(user.admin){
-      bot.reply(message, "yup, you da boss");
-    }else{
-      bot.reply(message, "YOU'RE NOT MY SUPERVISOR");
-    }
+    isAdmin = user.admin;
   });
+  if(!isAdmin){
+    bot.reply(message, "YOU AREN'T MY SUPERVISOR");
+    return;
+  }
+
+  bot.reply(message, "Yup, you da boss");
 });
 
 controller.hears(['shutdown'], earsEverywhere, function(bot,message){
