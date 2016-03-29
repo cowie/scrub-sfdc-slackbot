@@ -172,11 +172,7 @@ controller.hears(['add admin (.*)'], 'direct_message', function(bot, message){
       }
     }
   });
-
-
-
-    
-  });
+ 
 });
 
 
