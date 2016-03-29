@@ -146,9 +146,11 @@ controller.hears(['call me (.*)'], earsEverywhere, function(bot, message){
   });
 });
 
-controller.hears(['addadmin'], 'direct_message', function(bot, message){
-  controller.storage.users.save({id:message.user, admin:true}, function(err, id){
-    bot.reply(message, "You are now saved as an admin");
+controller.hears(['add admin (.*)'], 'direct_message', function(bot, message){
+  var matches = message.text.match(/add admin (.*)/i);
+  var name = matches[1];
+  bot.api.users.info({name}, function(err, response){
+    bot.reply(message, "your ID is " + response.user.id);
   });
 });
 
@@ -169,7 +171,36 @@ controller.hears(['am I an admin'], 'direct_message', function(bot, message){
 });
 
 controller.hears(['shutdown'], earsEverywhere, function(bot,message){
-
+  controller.storage.users.get(message.user, function(err, user){
+    if(user.admin){
+      bot.startConversation(message, function(err, convo){
+        convo.ask("Are you sure you want me to shutdown?", [
+        {
+          pattern: bot.utterances.yes, 
+          callback: function(response,convo){
+            convo.say("Done. Bye!");
+            convo.next();
+            setTimeout(function(){
+              process.exit();
+            }, 3000);
+          }
+        },
+        {
+          pattern:bot.utterances.no,
+          default:true,
+          callback: function(response,convo){
+            convo.say("*OH THANK GOD*");
+            convo.next();
+          }
+        }
+        ]);
+        }
+        }
+      });
+    }else{
+      bot.reply(message, "YOU'RE NOT MY SUPERVISOR");
+    }
+  });
 });
 
 
