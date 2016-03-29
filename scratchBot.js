@@ -174,6 +174,7 @@ controller.hears(['add admin (.*)'], 'direct_message', function(bot, message){
   console.log(message);
 
   //admin check
+  /*
   var isAdmin = false;
   controller.storage.users.get(message.user, function(err, user){
     isAdmin = user.admin;
@@ -181,7 +182,7 @@ controller.hears(['add admin (.*)'], 'direct_message', function(bot, message){
   if(!isAdmin){
     bot.reply(message, "YOU AREN'T MY SUPERVISOR");
     return;
-  }
+  }*/
 
   bot.api.users.list({}, function(err, response){
     if(err){
