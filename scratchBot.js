@@ -110,11 +110,11 @@ controller.on('rtm_close',function(bot) {
   // you may want to attempt to re-open
 });
 
-controller.hears('hello','direct_message',function(bot,message) {
+controller.hears('hello',['direct_message', 'direct_mention'],function(bot,message) {
   bot.reply(message,'Hello!');
 });
 
-controller.hears('^stop','direct_message',function(bot,message) {
+controller.hears('^stop',['direct_message', 'direct_mention'],function(bot,message) {
   bot.reply(message,'Goodbye');
   bot.rtm.close();
 });
