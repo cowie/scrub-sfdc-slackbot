@@ -147,8 +147,14 @@ controller.hears(['call me (.*)'], earsEverywhere, function(bot, message){
 });
 
 controller.hears(['addadmin'], 'direct_message', function(bot, message){
-  controller.storage.admins.save(message.user, function(err, id){
+  controller.storage.users.save({id:message.user, admin:true}, function(err, id){
     bot.reply(message, "You are now saved as an admin");
+  });
+});
+
+controller.hears(['show all admins'], 'direct_message', function(bot, message){
+  controller.storage.users.all(function(err, all_user_data) {
+    bot.reply(message, "here's everything I guess - " + all_user_data);
   });
 });
 
