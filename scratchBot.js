@@ -136,8 +136,8 @@ controller.hears(['hello', 'hi'],earsEverywhere,function(bot,message) {
 });
 
 controller.hears(['chuck norris'], earsEverywhere, function(bot, message){
-  var options = {host: 'http://api.icndb.com', path:'/jokes/random', method: 'GET'}
-  http.request(options, function(res){
+  var options = {host: 'api.icndb.com', path:'/jokes/random'}
+  http.get(options, function(res){
     bot.reply(message, res.value.joke);
   });
 })
