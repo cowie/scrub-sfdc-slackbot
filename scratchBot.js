@@ -149,15 +149,31 @@ controller.hears(['call me (.*)'], earsEverywhere, function(bot, message){
 controller.hears(['add admin (.*)'], 'direct_message', function(bot, message){
   var matches = message.text.match(/add admin (.*)/i);
   var name = matches[1];
-  bot.api.users.info({name}, function(err, response){
+  var userID = null;
+  console.log(name);
+  console.log(message);
+  bot.api.users.list({}, function(err, response){
     if(err){
-      bot.reply(message, "big boom - " + err);
-    }
-    else if(response.ok){
-      bot.reply(message, "your ID is " + response.user.id);  
+      bot.reply(message, "sorry, error looking up the user list, try again later");
     }else{
-      bot.reply(message, "shit messed up, here's the error - " + response.error);
+      for(var member in response.members){
+        if(member.name == name){
+          userID = member.id;
+          break;
+        }
+      }
+      if(userID == null){
+        bot.reply(message, "Your user, " + name + " wasn't found in the team.");
+      }
+      else{
+        controller.storage.users.save({id:userID, admin:true}, function(err, user){
+        bot.reply(message, "Success, " + name + ", under ID " + userID + " was logged as an admin.");
+        });
+      }
     }
+  });
+
+
 
     
   });
