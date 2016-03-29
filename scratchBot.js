@@ -111,13 +111,44 @@ controller.on('rtm_close',function(bot) {
 });
 
 controller.hears('hello',['direct_message', 'direct_mention'],function(bot,message) {
-  bot.reply(message,'Hello!');
+
+  controller.storage.users.get(message.user, function(err,user){
+    //query for the user messaging us in storage
+    if(user && user.name){
+      //if this user exists and has a name in our system
+      bot.reply(message, "Oh what's up, " + user.name);
+      else{
+        bot.reply(message, "Hello.");
+      }
+    }
+  });
+});
+
+controller.hears(['call me (.*)'], ['direct_message', 'direct_mention'], function(bot, message){
+  var matches = message.text.match(/call me (.*)/i);
+  var name = matches[1];
+
+  controller.storage.users.get(message.user, function(err, user){
+    if(!user){
+      user = {id: message.user};
+    }
+    user.name= name;
+    controller.storage.users.save(user, function(err, id){
+      bot.reply(message, "Oh, that's your name? Alright, I'll call you " + user.name + " from now on.");
+    });
+  });
+});
+
+controller.hears('joke', ['direct_message', 'direct_mention'], function(bot, message){
+  //ask redis for a joke
+
 });
 
 controller.hears('^stop',['direct_message', 'direct_mention'],function(bot,message) {
   bot.reply(message,'Goodbye');
   bot.rtm.close();
 });
+
 
 /*
 controller.on(['direct_message','mention','direct_mention'],function(bot,message) {
