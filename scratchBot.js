@@ -307,6 +307,9 @@ controller.hears(['list T1 cases'], earsEverywhere, function(bot,message){
         function(err, result){
           if(err){
             console.error(err);bot.reply(message, "error making query - " + err);
+          }else{
+            console.log('YUPPPP');
+            bot.reply(message, "HERE YOU GO DAWG - " + result.rows);
           }
         });
     }
