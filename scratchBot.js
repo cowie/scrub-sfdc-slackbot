@@ -174,41 +174,44 @@ controller.hears(['add admin (.*)'], 'direct_message', function(bot, message){
   console.log(message);
 
   //admin check
-  /*
+  
   var isAdmin = false;
   controller.storage.users.get(message.user, function(err, user){
     isAdmin = user.admin;
-  });
-  if(!isAdmin){
-    bot.reply(message, "YOU AREN'T MY SUPERVISOR");
-    return;
-  }*/
-
-  bot.api.users.list({}, function(err, response){
-    if(err){
-      bot.reply(message, "sorry, error looking up the user list, try again later");
+    if(!isAdmin){
+     bot.reply(message, "YOU AREN'T MY SUPERVISOR");
+      return;
     }else{
-      console.log(response.members);
-      for(var x=0;x<response.members.length;x++){
-        var member = response.members[x];
-        console.log(response.members[x]);
-        console.log("Checking " + name + " against " + member.id + " " + member.name);
-        if(member.name == name){
-          userID = member.id;
-          break;
+      bot.api.users.list({}, function(err, response){
+        if(err){
+          bot.reply(message, "sorry, error looking up the user list, try again later");
+        }else{
+          console.log(response.members);
+          for(var x=0;x<response.members.length;x++){
+            var member = response.members[x];
+            console.log(response.members[x]);
+            console.log("Checking " + name + " against " + member.id + " " + member.name);
+            if(member.name == name){
+              userID = member.id;
+              break;
+            }
+          }
+          
+          if(userID == null){
+            bot.reply(message, "Your user, " + name + " wasn't found in the team.");
+          }
+          else{
+            controller.storage.users.save({id:userID, admin:true, name:name}, function(err, user){
+            bot.reply(message, "Success, " + name + ", under ID " + userID + " was logged as an admin.");
+            });
+          }
         }
-      }
-      
-      if(userID == null){
-        bot.reply(message, "Your user, " + name + " wasn't found in the team.");
-      }
-      else{
-        controller.storage.users.save({id:userID, admin:true, name:name}, function(err, user){
-        bot.reply(message, "Success, " + name + ", under ID " + userID + " was logged as an admin.");
-        });
-      }
+      });
     }
   });
+  
+
+  
  
 });
 
@@ -260,13 +263,17 @@ controller.hears(['am I an admin'], 'direct_message', function(bot, message){
   var isAdmin = false;
   controller.storage.users.get(message.user, function(err, user){
     isAdmin = user.admin;
+    if(!isAdmin){
+      bot.reply(message, "YOU AREN'T MY SUPERVISOR");
+      return;
+    }
+    else{
+      bot.reply(message, "Yup, you da boss");
+    }
   });
-  if(!isAdmin){
-    bot.reply(message, "YOU AREN'T MY SUPERVISOR");
-    return;
-  }
+  
 
-  bot.reply(message, "Yup, you da boss");
+  
 });
 
 controller.hears(['shutdown'], earsEverywhere, function(bot,message){
