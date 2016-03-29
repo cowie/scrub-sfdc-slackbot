@@ -150,15 +150,19 @@ controller.hears(['add admin (.*)'], 'direct_message', function(bot, message){
   var matches = message.text.match(/add admin (.*)/i);
   var name = matches[1];
   bot.api.users.info({name}, function(err, response){
-    bot.reply(message, "your ID is " + response.user.id);
+    if(err){
+      bot.reply(message, "big boom - " + err);
+    }
+    else if(response.ok){
+      bot.reply(message, "your ID is " + response.user.id);  
+    }else{
+      bot.reply(message, "shit messed up, here's the error - " + response.error);
+    }
+
+    
   });
 });
 
-controller.hears(['show all admins'], 'direct_message', function(bot, message){
-  controller.storage.users.all(function(err, all_user_data) {
-    bot.reply(message, "here's everything I guess - " + all_user_data);
-  });
-});
 
 controller.hears(['am I an admin'], 'direct_message', function(bot, message){
   controller.storage.users.get(message.user, function(err, user){
