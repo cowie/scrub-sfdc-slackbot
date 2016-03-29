@@ -117,6 +117,7 @@ controller.hears('hello',['direct_message', 'direct_mention'],function(bot,messa
     if(user && user.name){
       //if this user exists and has a name in our system
       bot.reply(message, "Oh what's up, " + user.name);
+    }
       else{
         bot.reply(message, "Hello.");
       }
