@@ -18,7 +18,7 @@ module.exports = function(config) {
 
     var storage = {},
     client = redis.createClient(config), // could pass specific redis config here
-    methods = config.methods || ['teams', 'users', 'channels'];
+    methods = config.methods || ['teams', 'users', 'channels', 'admins', 'chucknorris'];
 
     // Implements required API methods
     for (var i = 0; i < methods.length; i++) {

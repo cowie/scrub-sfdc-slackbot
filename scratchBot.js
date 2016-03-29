@@ -67,6 +67,9 @@ controller.setupWebserver(process.env.port,function(err,webserver) {
 });
 
 
+//set up various lists that we're gonna use today
+
+
 // just a simple way to make sure we don't
 // connect to the RTM twice for the same team
 var _bots = {};
@@ -99,8 +102,9 @@ controller.on('create_bot',function(bot,config) {
 
 });
 
-
+var earsDirectOnly = ['direct_message', 'direct_mention'];
 var earsEverywhere = ['direct_message', 'direct_mention', 'mention'];
+var earsMentionOnly = ['direct_mention', 'mention'];
 
 // Handle events related to the websocket connection to Slack
 controller.on('rtm_open',function(bot) {
@@ -127,8 +131,7 @@ controller.hears(['hello', 'hi'],earsEverywhere,function(bot,message) {
     })
 });
 
-
-controller.hears(['call me (.*)'], ['direct_message', 'direct_mention'], function(bot, message){
+controller.hears(['call me (.*)'], earsEverywhere, function(bot, message){
   var matches = message.text.match(/call me (.*)/i);
   var name = matches[1];
 
@@ -143,11 +146,15 @@ controller.hears(['call me (.*)'], ['direct_message', 'direct_mention'], functio
   });
 });
 
-controller.hears('joke', ['direct_message', 'direct_mention'], function(bot, message){
-  //ask redis for a joke
-
+controller.hears(['addadmin'], 'direct_message', function(bot, message){
+  controller.storage.admins.save(user, function(err, id){
+    bot.reply(message, "You are now saved as an admin");
+  });
 });
 
+controller.hears(['shutdown'], earsEverywhere, function(bot,message){
+
+});
 
 
 /*
