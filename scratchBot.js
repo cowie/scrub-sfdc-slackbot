@@ -315,7 +315,7 @@ controller.hears(['list T1 cases'], earsEverywhere, function(bot,message){
             for(var x=0; x<result.rows.length; x++){
               row = result.rows[x];
               console.log(row);
-              bot.reply(message, "*: " + row.CaseNumber + " | " + row.Status + " | " + row.Subject);
+              bot.reply(message, "*: " + row.casenumber + " | " + row.status + " | " + row.subject);
             
             }
             bot.reply(message, "End case list");
