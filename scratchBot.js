@@ -31,6 +31,8 @@ var redis_url = process.env.REDIS_URL || "redis://127.0.0.1:6379";
 var redis_store = new Redis_Store({url: redis_url});
 var http = require('http');
 var JSON = require('JSON');
+var pg = require('pg');
+var conString = process.env.DATABASE_URL;
 
 
 require('./env.js');
@@ -150,7 +152,6 @@ controller.hears(['chuck norris'], earsEverywhere, function(bot, message){
   });
 })
 
-
 controller.hears(['call me (.*)'], earsEverywhere, function(bot, message){
   var matches = message.text.match(/call me (.*)/i);
   var name = matches[1];
@@ -209,10 +210,6 @@ controller.hears(['add admin (.*)'], 'direct_message', function(bot, message){
       });
     }
   });
-  
-
-  
- 
 });
 
 controller.hears(['remove admin (.*)'], 'direct_message', function(bot, message){
@@ -254,9 +251,7 @@ controller.hears(['remove admin (.*)'], 'direct_message', function(bot, message)
       }
     }
   });
-
 });
-
 
 controller.hears(['am I an admin'], 'direct_message', function(bot, message){
   //admin check
@@ -270,10 +265,7 @@ controller.hears(['am I an admin'], 'direct_message', function(bot, message){
     else{
       bot.reply(message, "Yup, you da boss");
     }
-  });
-  
-
-  
+  }); 
 });
 
 controller.hears(['shutdown'], earsEverywhere, function(bot,message){
@@ -306,6 +298,20 @@ controller.hears(['shutdown'], earsEverywhere, function(bot,message){
   });
 });
 
+controller.hears(['list T1 cases'], earsEverywhere, function(bot,message){
+  pg.connect(conString, function(err, client, done){
+    if(err){
+      console.error(err);bot.reply(message, "error connecting to postgres - " + err);
+    }else{
+      client.query("SELECT Id, AccountId, CaseNumber, Chanel__c, ContactId, Cost__c, CreatedDate, OwnerId, Priority, Status, Subject, Description FROM Salesforce.Case WHERE OwnerId = '00G360000012Gmf'",
+        function(err, result){
+          if(err){
+            console.error(err);bot.reply(message, "error making query - " + err);
+          }
+        });
+    }
+  });
+});
 
 /*
 controller.hears('^stop',['direct_message', 'direct_mention'],function(bot,message) {
