@@ -1,18 +1,19 @@
 {
-   "name": "scratchBot",
-   "version": "0.0.1",
-   "description": "Slack bot scaffolding",
-   "main": "scratchBot.js",
-   "scripts": {
-     "start": "node scratchBot.js"
-   },
-   "author": "no one",
-   "license": "MIT",
-   "dependencies": {
-     "botkit": "^0.0.5",
-     "redis": "*"
-   },
-   "engines": {
-     "node": "*"
-   }
- }
+  "name": "scratchBot",
+  "version": "0.0.1",
+  "description": "Slack bot scaffolding",
+  "main": "scratchBot.js",
+  "scripts": {
+    "start": "node scratchBot.js"
+  },
+  "author": "no one",
+  "license": "MIT",
+  "dependencies": {
+    "botkit": "^0.0.5",
+    "http-request": "^0.7.0",
+    "redis": "*"
+  },
+  "engines": {
+    "node": "*"
+  }
+}
