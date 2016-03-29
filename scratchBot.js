@@ -156,7 +156,10 @@ controller.hears(['add admin (.*)'], 'direct_message', function(bot, message){
     if(err){
       bot.reply(message, "sorry, error looking up the user list, try again later");
     }else{
+      console.log(response.members);
       for(var member in response.members){
+        console.log(member)
+        console.log("Checking " name + " against " member.id + " " + member.name);
         if(member.name == name){
           userID = member.id;
           break;
