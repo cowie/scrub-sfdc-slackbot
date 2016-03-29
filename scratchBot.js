@@ -30,6 +30,8 @@ var Redis_Store = require('./redis_storage.js');
 var redis_url = process.env.REDIS_URL || "redis://127.0.0.1:6379";
 var redis_store = new Redis_Store({url: redis_url});
 var http = require('http');
+var JSON = require('JSON');
+
 
 require('./env.js');
 
@@ -136,11 +138,15 @@ controller.hears(['hello', 'hi'],earsEverywhere,function(bot,message) {
 });
 
 controller.hears(['chuck norris'], earsEverywhere, function(bot, message){
-  var options = {host: 'http://api.icndb.com', path:'/jokes/random'}
-  http.get(options, function(res){
-    console.log(res);
-
-    bot.reply(message, res.value.joke);
+  http.get('http://api.icndb.com/jokes/random', function(res){
+    var body = '';
+    res.on('data', function(chunk){
+      body += chunk;
+    });
+    res.on('end', function(){
+      var parsed = JSON.parse(body);
+      bot.reply(message, parsed.value.joke);
+    });
   });
 })
 

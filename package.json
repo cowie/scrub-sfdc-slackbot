@@ -9,9 +9,11 @@
   "author": "no one",
   "license": "MIT",
   "dependencies": {
+    "JSON": "^1.0.0",
     "botkit": "^0.0.5",
     "http-request": "^0.7.0",
-    "redis": "*"
+    "redis": "*",
+    "request": "^2.69.0"
   },
   "engines": {
     "node": "*"
