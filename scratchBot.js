@@ -157,14 +157,16 @@ controller.hears(['add admin (.*)'], 'direct_message', function(bot, message){
       bot.reply(message, "sorry, error looking up the user list, try again later");
     }else{
       console.log(response.members);
-      for(var member in response.members){
-        console.log(member)
+      for(var x=0;x<response.members.length;x++){
+        var member = response.members[x];
+        console.log(response.members[x]);
         console.log("Checking " + name + " against " + member.id + " " + member.name);
         if(member.name == name){
           userID = member.id;
           break;
         }
       }
+      
       if(userID == null){
         bot.reply(message, "Your user, " + name + " wasn't found in the team.");
       }
