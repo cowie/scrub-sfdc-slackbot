@@ -121,9 +121,9 @@ controller.hears('hello',['direct_message', 'direct_mention'],function(bot,messa
       else{
         bot.reply(message, "Hello.");
       }
-    }
-  });
+    })
 });
+
 
 controller.hears(['call me (.*)'], ['direct_message', 'direct_mention'], function(bot, message){
   var matches = message.text.match(/call me (.*)/i);
