@@ -193,9 +193,7 @@ controller.hears(['shutdown'], earsEverywhere, function(bot,message){
           }
         }
         ]);
-        });
-        }
-      });
+        });  
     }else{
       bot.reply(message, "YOU'RE NOT MY SUPERVISOR");
     }
