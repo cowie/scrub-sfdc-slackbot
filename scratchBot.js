@@ -303,7 +303,7 @@ controller.hears(['list T1 cases'], earsEverywhere, function(bot,message){
     if(err){
       console.error(err);bot.reply(message, "error connecting to postgres - " + err);
     }else{
-      client.query("SELECT Id, AccountId, CaseNumber, Chanel__c, ContactId, Cost__c, CreatedDate, OwnerId, Priority, Status, Subject, Description FROM Salesforce.Case WHERE OwnerId = '00G360000012Gmf'",
+      client.query("SELECT Id, AccountId, CaseNumber, Channel__c, ContactId, Cost__c, CreatedDate, OwnerId, Priority, Status, Subject, Description FROM Salesforce.Case WHERE OwnerId = '00G360000012Gmf'",
         function(err, result){
           if(err){
             console.error(err);bot.reply(message, "error making query - " + err);
