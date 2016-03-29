@@ -184,8 +184,7 @@ controller.hears(['shutdown'], earsEverywhere, function(bot,message){
               process.exit();
             }, 3000);
           }
-        },
-        {
+        },{
           pattern:bot.utterances.no,
           default:true,
           callback: function(response,convo){
@@ -194,7 +193,7 @@ controller.hears(['shutdown'], earsEverywhere, function(bot,message){
           }
         }
         ]);
-        }
+        });
         }
       });
     }else{
