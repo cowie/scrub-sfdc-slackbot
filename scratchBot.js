@@ -100,6 +100,8 @@ controller.on('create_bot',function(bot,config) {
 });
 
 
+var earsEverywhere = ['direct_message', 'direct_mention', 'mention'];
+
 // Handle events related to the websocket connection to Slack
 controller.on('rtm_open',function(bot) {
   console.log('** The RTM api just connected!');
@@ -110,7 +112,8 @@ controller.on('rtm_close',function(bot) {
   // you may want to attempt to re-open
 });
 
-controller.hears('hello',['direct_message', 'direct_mention'],function(bot,message) {
+//respond to hello
+controller.hears(['hello', 'hi'],earsEverywhere,function(bot,message) {
 
   controller.storage.users.get(message.user, function(err,user){
     //query for the user messaging us in storage
@@ -145,11 +148,14 @@ controller.hears('joke', ['direct_message', 'direct_mention'], function(bot, mes
 
 });
 
+
+
+/*
 controller.hears('^stop',['direct_message', 'direct_mention'],function(bot,message) {
   bot.reply(message,'Goodbye');
   bot.rtm.close();
 });
-
+*/
 
 /*
 controller.on(['direct_message','mention','direct_mention'],function(bot,message) {
