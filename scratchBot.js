@@ -158,6 +158,16 @@ controller.hears(['show all admins'], 'direct_message', function(bot, message){
   });
 });
 
+controller.hears(['am I an admin'], 'direct_message', function(bot, message){
+  controller.storage.users.get(message.user, function(err, user){
+    if(user.admin){
+      bot.reply(message, "yup, you da boss");
+    }else{
+      bot.reply(message, "YOU'RE NOT MY SUPERVISOR");
+    }
+  });
+});
+
 controller.hears(['shutdown'], earsEverywhere, function(bot,message){
 
 });
