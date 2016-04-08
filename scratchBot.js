@@ -124,7 +124,7 @@ controller.setupWebserver(process.env.port,function(err,webserver) {
 
   webserver.get('/createChannel', function(req, res){
     
-    var targetURL = 'https://slack.com/api/channels.create?token=' + process.env.clientId + '&name=' + req.param.name;
+    var targetURL = 'https://slack.com/api/channels.create?token=' + process.env.clientId + '&name=bonkers';
 
     https.get(targetURL, (res2) => {
       console.log("IT WORKED");
@@ -133,7 +133,8 @@ controller.setupWebserver(process.env.port,function(err,webserver) {
       console.log(res2);
       res2.resume();
     }).on('error', (e)=> {
-      
+      console.log('stuff broke');
+      console.log(e);
     });
     
     
