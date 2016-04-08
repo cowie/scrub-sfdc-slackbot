@@ -30,6 +30,7 @@ var Redis_Store = require('./redis_storage.js');
 var redis_url = process.env.REDIS_URL || "redis://127.0.0.1:6379";
 var redis_store = new Redis_Store({url: redis_url});
 var http = require('http');
+const https = require('https');
 var JSON = require('JSON');
 var pg = require('pg');
 var conString = process.env.DATABASE_URL;
@@ -123,11 +124,11 @@ controller.setupWebserver(process.env.port,function(err,webserver) {
 
   webserver.get('/createChannel', function(req, res){
     
-    var targetURL = 'https://slack.com/api/channels.create?token=' + process.env.clientId + '&name=' + req.param.name;
+    var targetURL = 'http://slack.com/api/channels.create?token=' + process.env.clientId + '&name=' + req.param.name;
 
-    http.get(targetURL, (res) => {
+    https.get(targetURL, (res2) => {
       console.log("IT WORKED");
-      res.resume();
+      res2.resume();
     }).on('error', (e)=> {
 
     });
