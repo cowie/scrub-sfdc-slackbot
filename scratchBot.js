@@ -58,7 +58,6 @@ var controller = Botkit.slackbot({
 
 
 
-//set up various lists that we're gonna use today
 
 
 // just a simple way to make sure we don't
@@ -124,13 +123,13 @@ controller.setupWebserver(process.env.port,function(err,webserver) {
 
   webserver.get('/createChannel', function(req, res){
     
-    var targetURL = 'https://slack.com/api/channels.create?token=33277585748.33293943159' + '&name=bonkers';
+    var targetURL = 'https://slack.com/api/channels.create?token=xoxp-33277585748-33238216051-33306678548-b0a6ea1979' + '&name=bonkers';
 
     https.get(targetURL, (res2) => {
       console.log("IT WORKED");
       
       res2.on('data', function(chunk){
-        console.log('BODY:' + chunk);w
+        console.log('BODY:' + chunk);
       });
 
       res2.resume();
