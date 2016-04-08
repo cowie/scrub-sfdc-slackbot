@@ -114,10 +114,27 @@ controller.setupWebserver(process.env.port,function(err,webserver) {
     res.sendFile('index.html', {root:__dirname})
   });
 
+
+  //USECASE 1: API Calls into System to Talk
   webserver.get('/sayHello', function(req,res){
-    bot.say({text:'Hi everyone!', channel:'general'});
+    //controller.say({text:'Hi everyone!', channel:'general'});
     res.send('Success!');
-  })
+  });
+
+  webserver.get('/createChannel', function(req, res){
+    
+    var targetURL = 'https://slack.com/api/channels.create?token=' + process.env.clientId + '&name=' + req.param.name;
+
+    http.get(targetURL, (res) => {
+      console.log("IT WORKED");
+      res.resume();
+    }).on('error', (e)=> {
+
+    });
+    
+    
+    res.send('Success!');
+  });
 
   controller.createWebhookEndpoints(controller.webserver);
 
@@ -129,6 +146,11 @@ controller.setupWebserver(process.env.port,function(err,webserver) {
     }
   });
 });
+
+
+//USECASE 2: API TO CREATE CHANNELS AS NECESSARY
+//USECASE 3: HEAR Message to update, update accurate record in SFDC
+//USECASE 4: HEAR message w attachment, send attachment to SFDC.
 
 
 //respond to hello
