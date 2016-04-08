@@ -128,8 +128,11 @@ controller.setupWebserver(process.env.port,function(err,webserver) {
 
     https.get(targetURL, (res2) => {
       console.log("IT WORKED");
-      console.log(res2.statusCode);
-      console.log(res2.body);
+      
+      res2.on('data', function(chunk){
+        console.log('BODY:' + chunk);
+      });
+
       res2.resume();
     }).on('error', (e)=> {
       console.log('stuff broke');
