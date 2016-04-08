@@ -54,22 +54,7 @@ var controller = Botkit.slackbot({
   }
 );
 
-controller.setupWebserver(process.env.port,function(err,webserver) {
 
-  webserver.get('/', function(req, res){
-    res.sendFile('index.html', {root:__dirname})
-  });
-
-  controller.createWebhookEndpoints(controller.webserver);
-
-  controller.createOauthEndpoints(controller.webserver,function(err,req,res) {
-    if (err) {
-      res.status(500).send('ERROR: ' + err);
-    } else {
-      res.send('Success!');
-    }
-  });
-});
 
 
 //set up various lists that we're gonna use today
@@ -122,6 +107,28 @@ controller.on('rtm_close',function(bot) {
 });
 
 
+//webservice handling
+controller.setupWebserver(process.env.port,function(err,webserver) {
+
+  webserver.get('/', function(req, res){
+    res.sendFile('index.html', {root:__dirname})
+  });
+
+  webserver.get('/sayHello', function(req,res){
+    bot.say({text:'Hi everyone!', channel:'general'});
+    res.send('Success!');
+  })
+
+  controller.createWebhookEndpoints(controller.webserver);
+
+  controller.createOauthEndpoints(controller.webserver,function(err,req,res) {
+    if (err) {
+      res.status(500).send('ERROR: ' + err);
+    } else {
+      res.send('Success!');
+    }
+  });
+});
 
 
 //respond to hello
