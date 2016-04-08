@@ -130,7 +130,6 @@ controller.setupWebserver(process.env.port,function(err,webserver) {
       console.log("IT WORKED");
       console.log(res2.statusCode);
       console.log(res2.body);
-      console.log(res2);
       res2.resume();
     }).on('error', (e)=> {
       console.log('stuff broke');
