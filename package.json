@@ -1,5 +1,5 @@
 {
-  "name": "scratchBot",
+  "name": "sfdcBot",
   "version": "0.0.1",
   "description": "Slack bot scaffolding",
   "main": "scratchBot.js",
