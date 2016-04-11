@@ -147,7 +147,6 @@ controller.setupWebserver(process.env.port,function(err,webserver) {
       console.log(e);
     });
     
-    res.body(resBody);
     res.send(resBody);
   });
 
