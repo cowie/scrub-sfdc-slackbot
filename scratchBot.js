@@ -131,16 +131,14 @@ controller.setupWebserver(process.env.port,function(err,webserver) {
     
     var targetURL = 'https://slack.com/api/channels.create?token=xoxp-33277585748-33238216051-33306678548-b0a6ea1979' + '&name=' +chanName;
     var inviteURL = 'https://slack.com/api/channels.invite?token=xoxp-33277585748-33238216051-33306678548-b0a6ea1979&channel=_general&user=sfdc_ninja';
-    var body = '';
+    var resBody = '';
 
     https.get(targetURL, (res) => {
       console.log("IT WORKED");
       
       res.on('data', function(chunk){
-        body += chunk;
-      });
-      res.on('end',function(){
-        console.log('BODY:' + body);
+        console.log('BODY:' + chunk);
+        res.body += chunk;
       });
 
       res.resume();
@@ -149,7 +147,7 @@ controller.setupWebserver(process.env.port,function(err,webserver) {
       console.log(e);
     });
     
-    //res.send(resBody);
+    res.send();
   });
 
   webserver.get('/postMessage', function(req, res){
