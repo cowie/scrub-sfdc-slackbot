@@ -147,7 +147,8 @@ controller.setupWebserver(process.env.port,function(err,webserver) {
       console.log(e);
     });
     
-    res.send('Success!');
+    res.body(resBody);
+    res.send(resBody);
   });
 
   webserver.get('/postMessage', function(req, res){
