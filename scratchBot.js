@@ -138,7 +138,7 @@ controller.setupWebserver(process.env.port,function(err,webserver) {
       
       res2.on('data', function(chunk){
         console.log('BODY:' + chunk);
-        resBody += chunk;
+        resBody = chunk;
       });
 
       res2.resume();
@@ -147,11 +147,12 @@ controller.setupWebserver(process.env.port,function(err,webserver) {
       console.log(e);
     });
     
-    res.send(resBody);
+    res.send('Success!');
   });
 
   webserver.get('/postMessage', function(req, res){
     console.log(req);
+    console.log(req.body);
     res.send('Success!');
   });
 
