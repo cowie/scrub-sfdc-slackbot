@@ -186,7 +186,7 @@ controller.hears('update (.*) to (.*)', earsMentionOnly, function(bot, message){
     if(err){
       console.error(err);bot.reply(message, "error connecting to postgres - " + err);
     }else{
-      client.query("UPDATE Salesforce.Project__c SET " + fieldName + " = ($1) WHERE Slack_Channel_Id =($2)", [value, channelID], function(err, result){
+      client.query("UPDATE Salesforce.Project__c SET " + fieldName + " = ($1) WHERE Slack_Channel_Id__c =($2)", [value, channelID], function(err, result){
         if(err){
             console.error(err);bot.reply(message, "error making update - " + err);
           }else{
