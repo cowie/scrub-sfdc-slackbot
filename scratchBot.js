@@ -35,7 +35,6 @@ var JSON = require('JSON');
 var pg = require('pg');
 var conString = process.env.DATABASE_URL;
 
-
 require('./env.js');
 
 if (!process.env.clientId || !process.env.clientSecret || !process.env.port) {
@@ -123,6 +122,10 @@ controller.setupWebserver(process.env.port,function(err,webserver) {
 
   webserver.get('/createChannel', function(req, res){
     
+    console.log(req);
+    console.log(req.url);
+
+    /*
     var targetURL = 'https://slack.com/api/channels.create?token=xoxp-33277585748-33238216051-33306678548-b0a6ea1979' + '&name=bonkers';
 
     https.get(targetURL, (res2) => {
@@ -137,7 +140,7 @@ controller.setupWebserver(process.env.port,function(err,webserver) {
       console.log('stuff broke');
       console.log(e);
     });
-    
+    */
     
     res.send('Success!');
   });
