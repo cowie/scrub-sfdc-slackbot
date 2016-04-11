@@ -172,6 +172,31 @@ controller.setupWebserver(process.env.port,function(err,webserver) {
 //USECASE 3: HEAR Message to update, update accurate record in SFDC
 controller.hears('update (.*) to (.*)', earsMentionOnly, function(bot, message){
   bot.reply(message, "Yo, so first, matches0 is:" + message.match[0] + ", next matches1 is:" + message.match[1]+ ", finally matches2 is:" + message.match[2]);
+  //probably want to push this direct to sfdc
+  var channelID = message.channel;
+  //need to clean up the fieldName.
+  var fieldName = message.match[1];
+  fieldName = fieldName.replace(/ /g, "_");
+  fieldName = fieldName + "__c";
+  //need to set the value
+  var value = message.match[2];
+
+  //alright now based on channelID, we need to insert into SDFC, that'll be a https get request and a pg query.
+  pg.connect(conString, function(err, client, done){
+    if(err){
+      console.error(err);bot.reply(message, "error connecting to postgres - " + err);
+    }else{
+      client.query("UPDATE Salesforce.Project__c SET " + fieldName + " = ($1) WHERE Slack_Channel_Id =($2)", [value, channelID], function(err, result){
+        if(err){
+            console.error(err);bot.reply(message, "error making update - " + err);
+          }else{
+            console.log("Update went through");
+            bot.reply(message, "Successfully updated project, setting " + message.match[1] + " to the value of " + value + " inside Salesforce.");
+          }
+      })
+    }
+  });
+
 });
 //USECASE 4: HEAR message w attachment, send attachment to SFDC.
 
