@@ -133,21 +133,21 @@ controller.setupWebserver(process.env.port,function(err,webserver) {
     var inviteURL = 'https://slack.com/api/channels.invite?token=xoxp-33277585748-33238216051-33306678548-b0a6ea1979&channel=_general&user=sfdc_ninja';
     var resBody = '';
 
-    https.get(targetURL, (res) => {
+    https.get(targetURL, (res2) => {
       console.log("IT WORKED");
       
-      res.on('data', function(chunk){
+      res2.on('data', function(chunk){
         console.log('BODY:' + chunk);
-        res.body += chunk;
+        resBody += chunk;
       });
 
-      res.resume();
+      res2.resume();
     }).on('error', (e)=> {
       console.log('stuff broke');
       console.log(e);
     });
     
-    res.send();
+    res.send(resBody);
   });
 
   webserver.get('/postMessage', function(req, res){
