@@ -171,7 +171,7 @@ controller.setupWebserver(process.env.port,function(err,webserver) {
 //USECASE 2: API TO CREATE CHANNELS AS NECESSARY
 //USECASE 3: HEAR Message to update, update accurate record in SFDC
 controller.hears('update (.*) to (.*)', earsMentionOnly, function(bot, message){
-  bot.reply(message, "Yo, so first, matches0 is:" + message.matches[0] + ", next matches1 is:" + message.matches[1]+ ", finally matches2 is:" + message.matches[2]);
+  bot.reply(message, "Yo, so first, matches0 is:" + message.match[0] + ", next matches1 is:" + message.match[1]+ ", finally matches2 is:" + message.match[2]);
 });
 //USECASE 4: HEAR message w attachment, send attachment to SFDC.
 
