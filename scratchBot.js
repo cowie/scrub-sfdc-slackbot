@@ -124,9 +124,12 @@ controller.setupWebserver(process.env.port,function(err,webserver) {
     
     console.log(req);
     console.log(req.url);
+    console.log(req.url.Query);
+    var chanName = req.url.substring(req.url.indexOf('name=')+4);
+    console.log(chanName);
 
-    /*
-    var targetURL = 'https://slack.com/api/channels.create?token=xoxp-33277585748-33238216051-33306678548-b0a6ea1979' + '&name=bonkers';
+    
+    var targetURL = 'https://slack.com/api/channels.create?token=xoxp-33277585748-33238216051-33306678548-b0a6ea1979' + '&name=' +chanName;
 
     https.get(targetURL, (res2) => {
       console.log("IT WORKED");
@@ -140,7 +143,7 @@ controller.setupWebserver(process.env.port,function(err,webserver) {
       console.log('stuff broke');
       console.log(e);
     });
-    */
+    
     
     res.send('Success!');
   });
