@@ -106,10 +106,16 @@ controller.on('rtm_close',function(bot) {
   // you may want to attempt to re-open
 });
 
-
+/*
 controller.on('ambient', function(bot, message){
   console.log('omg someone said something');
   bot.reply('LOOK AT ME LOOK AT ME');
+});*/
+
+
+controller.on('channel_joined', function(bot, message){
+  bot.reply(message, "brah!");
+  console.log('brah!');
 });
 
 //webservice handling
@@ -285,10 +291,6 @@ controller.hears('update (.*) to (.*)', earsMentionOnly, function(bot, message){
 
 
 
-controller.on('channel_joined', function(bot, message){
-  bot.reply(message, "brah!");
-  console.log('brah!');
-});
 
 controller.on('file_public', function(bot, message){
   bot.reply(message, "Linking to Salesforce...");
