@@ -111,7 +111,7 @@ controller.on('user_typing', function(bot){
 });
 
 
-controller.on('file_created', function(bot, message){
+controller.on('file_created', function(bot){
   //bot.reply(message, "Linking to Salesforce...");
   console.log('brah look at that picture!');
   //var trueURL;
