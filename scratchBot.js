@@ -120,6 +120,7 @@ controller.setupWebserver(process.env.port,function(err,webserver) {
     res.send('Success!');
   });
 
+
   webserver.get('/createChannel', function(req, res){
     
     console.log(req);
@@ -130,30 +131,43 @@ controller.setupWebserver(process.env.port,function(err,webserver) {
 
     
     var targetURL = 'https://slack.com/api/channels.create?token=xoxp-33277585748-33238216051-33306678548-b0a6ea1979' + '&name=' +chanName;
-    var inviteURL = 'https://slack.com/api/channels.invite?token=xoxp-33277585748-33238216051-33306678548-b0a6ea1979&channel=_general&user=sfdc_ninja';
-    var resBody = '';
+    //var inviteURL = 'https://slack.com/api/channels.invite?token=xoxp-33277585748-33238216051-33306678548-b0a6ea1979&channel=_general&user=sfdc_ninja';
 
-    https.get(targetURL, (res2) => {
-      console.log("IT WORKED");
-      
+    https.get(targetURL, function(res2){
+      var body = '';
       res2.on('data', function(chunk){
-        console.log('BODY:' + chunk);
-        resBody = chunk;
+        body += chunk;
       });
-
-      res2.resume();
-    }).on('error', (e)=> {
-      console.log('stuff broke');
-      console.log(e);
+      res2.on('end', function(){
+        console.log(JSON.parse(body));
+        res.send(JSON.parse(body));
+      });
     });
     
-    res.send(resBody);
   });
 
   webserver.get('/postMessage', function(req, res){
-    console.log(req);
-    console.log(req.body);
-    res.send('Success!');
+    var message = req.body.message;
+    message.replace(/ /g, '%20');
+    
+    var channel ='';
+    channel.replace(/ /g, '%20');
+    channel.replace(/#/g, '%23');
+
+    var targetURL = 'https://slack.com/api/chat.postMessage?token=xoxp-33277585748-33238216051-33306678548-b0a6ea1979' + 
+      '&channel=%23bonkers' + 
+      '&text=' + req.body.message;
+
+    https.get(targetURL, function(res2){
+      var body = '';
+      res2.on('data', function(chunk){
+        body += chunk;
+      });
+      res2.on('end', function(){
+        console.log(JSON.parse(body));
+        res.send('Success!');
+      });
+    });
   });
 
   controller.createWebhookEndpoints(controller.webserver);
