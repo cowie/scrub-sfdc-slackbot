@@ -107,6 +107,11 @@ controller.on('rtm_close',function(bot) {
 });
 
 
+controller.on('ambient', function(bot, message){
+  console.log('omg someone said something');
+  bot.reply('LOOK AT ME LOOK AT ME');
+});
+
 //webservice handling
 controller.setupWebserver(process.env.port,function(err,webserver) {
 
@@ -277,6 +282,8 @@ controller.hears('update (.*) to (.*)', earsMentionOnly, function(bot, message){
 
 });
 //USECASE 4: HEAR message w attachment, send attachment to SFDC.
+
+
 
 controller.on('channel_joined', function(bot, message){
   bot.reply(message, "brah!");
