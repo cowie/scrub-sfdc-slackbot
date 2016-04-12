@@ -106,7 +106,7 @@ controller.on('rtm_close',function(bot) {
   // you may want to attempt to re-open
 });
 
-controller.on('channel_joined', function(bot){
+controller.on('user_typing', function(bot){
  console.log('brah!');
 });
 
