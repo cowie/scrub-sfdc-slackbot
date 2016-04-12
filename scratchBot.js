@@ -111,12 +111,12 @@ controller.on('user_typing', function(bot){
 });
 
 
-controller.on('file_public', function(bot, message){
-  bot.reply(message, "Linking to Salesforce...");
-  console.log('brah!');
-  var trueURL;
+controller.on('file_created', function(bot, message){
+  //bot.reply(message, "Linking to Salesforce...");
+  console.log('brah look at that picture!');
+  //var trueURL;
 
-  bot.reply(message, "id: " + message.file.id + ", name: " + message.file.name + ", url: " + message.file.url_private_download);
+  //bot.reply(message, "id: " + message.file.id + ", name: " + message.file.name + ", url: " + message.file.url_private_download);
 
 /*
   var conn = new jsforce.Connection();
