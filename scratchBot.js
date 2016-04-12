@@ -34,6 +34,7 @@ const https = require('https');
 var JSON = require('JSON');
 var pg = require('pg');
 var conString = process.env.DATABASE_URL;
+var jsforce = require('jsforce');
 
 require('./env.js');
 
@@ -277,6 +278,79 @@ controller.hears('update (.*) to (.*)', earsMentionOnly, function(bot, message){
 });
 //USECASE 4: HEAR message w attachment, send attachment to SFDC.
 
+
+controller.on('file_public', function(bot, message){
+  bot.reply(message, "Linking to Salesforce...");
+  var trueURL;
+
+  bot.reply(message, "id: " + message.file.id + ", name: " + message.file.name + ", url: " + message.file.url_private_download);
+
+/*
+  var conn = new jsforce.Connection();
+
+  conn.login('cdegour@tisslack.demo', 'salesforce1', function(err, res){
+    if(err){
+      console.error(err);bot.reply(message, 'ran into a problem logging into sfdc: ' + err);
+    }else{
+      conn.sobject("Slack_Image__c").create({
+        slack_image_id__c:message.file.id,
+        slack_image_url__c:
+      }, function(err, ret){
+
+      });
+    }
+  });
+*/
+
+
+  //send SFDC a message to create a 
+
+  //link over to SFDC and create the post
+  //regardless of success, create the PG entry on the PG side.
+  /*
+    message.file structure
+    {
+      id, name, 
+      mimetype: "text\/plain", 
+      filetype: "text",
+      user: "", << Slack User ID
+      username: "",
+      
+    } 
+  */
+
+  /*
+
+    To push into sfdc - use v35!
+      POST: https://nax.salesforce.com/services/data/v35.0/chatter/feed-elements
+
+      set header - Content-Type=multipart/form-data
+      set header with Authorization: OAUTh...
+
+  {
+    "body":{
+      "messageSegments":[
+        {
+          "type:"Text",
+          "text": "Please accept dis"
+        }
+      ]
+    },
+    "capabilities":{
+      "content":{
+          "description" : "image from slack",
+          "title": "imagename.png"
+        }
+    },
+    "feedElementType": "FeedItem",
+    "subjectId": recordParentID
+  }
+
+    
+
+  */
+
+});
 
 
 

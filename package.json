@@ -12,6 +12,7 @@
     "JSON": "^1.0.0",
     "botkit": "^0.0.5",
     "http-request": "^0.7.0",
+    "jsforce": "^1.6.0",
     "pg": "^4.5.1",
     "redis": "*",
     "request": "^2.69.0"
