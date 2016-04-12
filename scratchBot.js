@@ -209,17 +209,19 @@ controller.hears('update (.*) to (.*)', earsMentionOnly, function(bot, message){
                 console.error(err2);bot.reply(message, "error getting data, but update was successful - " + err2);
               }else{
                 console.log('updated, adn got message back');
+                var fieldName = message.match[1];
+                fieldName = charAt(0).toUpperCase() + fieldName.slice(1);
                 var attachments = [];
                 var attach = {
                   fallback: "Successful update. Set " + message.match[1] + " to the value of " + value,
                   color: "00A1E0",
                   pretext: "Update Successful",
                   title: result2.rows[0].name,
-                  title_link: "https://na30.salesforce.com/" + result2.rows[0].Id,
+                  title_link: "https://na30.salesforce.com/" + result2.rows[0].id,
                   text: result2.rows[0].description__c,
                   fields:[
                     {
-                      "title": message.match[1],
+                      "title": fieldName,
                       "value": value,
                       "short": false
                     }
