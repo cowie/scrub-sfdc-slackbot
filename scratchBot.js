@@ -226,6 +226,7 @@ controller.hears('update (.*) to (.*)', earsMentionOnly, function(bot, message){
                   ]
                 } 
                 attachments.push(attach);
+                console.log(result2.rows[0]);
                 bot.reply(message, {text: "", attachments:attachments}, function(err, resp){console.log(err, resp);})   
               }
             });
