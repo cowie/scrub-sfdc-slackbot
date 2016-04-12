@@ -182,10 +182,9 @@ controller.setupWebserver(process.env.port,function(err,webserver) {
 });
 
 
-//USECASE 2: API TO CREATE CHANNELS AS NECESSARY
 //USECASE 3: HEAR Message to update, update accurate record in SFDC
 controller.hears('update (.*) to (.*)', earsMentionOnly, function(bot, message){
-  bot.reply(message, "Yo, so first, matches0 is:" + message.match[0] + ", next matches1 is:" + message.match[1]+ ", finally matches2 is:" + message.match[2]);
+  //bot.reply(message, "Yo, so first, matches0 is:" + message.match[0] + ", next matches1 is:" + message.match[1]+ ", finally matches2 is:" + message.match[2]);
   //probably want to push this direct to sfdc
   var channelID = message.channel;
   //need to clean up the fieldName.
@@ -205,7 +204,32 @@ controller.hears('update (.*) to (.*)', earsMentionOnly, function(bot, message){
             console.error(err);bot.reply(message, "error making update - " + err);
           }else{
             console.log("Update went through");
-            bot.reply(message, "Successfully updated project, setting " + message.match[1] + " to the value of " + value + " inside Salesforce.");
+            client.query("SELECT Id, Name, Description__c FROM Project__C WHERE Slack_Channel_Id__c = '" + channelID + "'", function(err2, result2){
+              if(err2){
+                console.error(err2);bot.reply(message, "error getting data, but update was successful - " + err2);
+              }else{
+                console.log('updated, adn got message back');
+                var attachments = [];
+                var attach = {
+                  fallback: "Successful update. Set " + message.match[1] + " to the value of " + value,
+                  color: "00A1E0",
+                  pretext: "Update Successful",
+                  title: result2.rows[0].Name,
+                  title_link: "https://na30.salesforce.com/" + result2.rows[0].Id,
+                  text: result2.rows[0].Description__c,
+                  fields:[
+                    {
+                      "title": message.match[1],
+                      "value": value,
+                      "short": false
+                    }
+                  ]
+                } 
+                attachments.push(attach);
+                bot.reply(message, {text: "", attachments:attachments}, function(err, resp){console.log(err, resp);})   
+              }
+            });
+            //bot.reply(message, "Successfully updated project, setting " + message.match[1] + " to the value of " + value + " inside Salesforce.");
           }
       })
     }
@@ -213,6 +237,8 @@ controller.hears('update (.*) to (.*)', earsMentionOnly, function(bot, message){
 
 });
 //USECASE 4: HEAR message w attachment, send attachment to SFDC.
+
+
 
 
 //respond to hello
