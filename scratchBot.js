@@ -214,9 +214,9 @@ controller.hears('update (.*) to (.*)', earsMentionOnly, function(bot, message){
                   fallback: "Successful update. Set " + message.match[1] + " to the value of " + value,
                   color: "00A1E0",
                   pretext: "Update Successful",
-                  title: result2.rows[0].Name,
+                  title: result2.rows[0].name,
                   title_link: "https://na30.salesforce.com/" + result2.rows[0].Id,
-                  text: result2.rows[0].Description__c,
+                  text: result2.rows[0].description__c,
                   fields:[
                     {
                       "title": message.match[1],
