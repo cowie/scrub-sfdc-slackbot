@@ -119,7 +119,7 @@ controller.on('ambient', function(bot,message){
 })
 */
 
-controller.on('file_created', function(bot){
+controller.on('file_share', function(bot, message){
   //bot.reply(message, "Linking to Salesforce...");
   console.log('brah look at that picture!');
   //var trueURL;
