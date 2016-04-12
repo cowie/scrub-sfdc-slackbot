@@ -204,7 +204,7 @@ controller.hears('update (.*) to (.*)', earsMentionOnly, function(bot, message){
             console.error(err);bot.reply(message, "error making update - " + err);
           }else{
             console.log("Update went through");
-            client.query("SELECT Id, Name, Description__c FROM Project__C WHERE Slack_Channel_Id__c = '" + channelID + "'", function(err2, result2){
+            client.query("SELECT Id, Name, Description__c FROM Salesforce.Project__C WHERE Slack_Channel_Id__c = '" + channelID + "'", function(err2, result2){
               if(err2){
                 console.error(err2);bot.reply(message, "error getting data, but update was successful - " + err2);
               }else{
