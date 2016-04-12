@@ -278,9 +278,14 @@ controller.hears('update (.*) to (.*)', earsMentionOnly, function(bot, message){
 });
 //USECASE 4: HEAR message w attachment, send attachment to SFDC.
 
+controller.on('channel_joined', function(bot, message){
+  bot.reply(message, "brah!");
+  console.log('brah!');
+});
 
 controller.on('file_public', function(bot, message){
   bot.reply(message, "Linking to Salesforce...");
+  console.log('brah!');
   var trueURL;
 
   bot.reply(message, "id: " + message.file.id + ", name: " + message.file.name + ", url: " + message.file.url_private_download);
