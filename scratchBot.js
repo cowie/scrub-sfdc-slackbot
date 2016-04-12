@@ -106,18 +106,87 @@ controller.on('rtm_close',function(bot) {
   // you may want to attempt to re-open
 });
 
-/*
-controller.on('ambient', function(bot, message){
-  console.log('omg someone said something');
-  bot.reply('LOOK AT ME LOOK AT ME');
-});*/
-
-
 controller.on('user_channel_joined', function(bot, message){
  console.log('brah!');
   bot.reply(message, "brah!");
   
 });
+
+
+controller.on('file_public', function(bot, message){
+  bot.reply(message, "Linking to Salesforce...");
+  console.log('brah!');
+  var trueURL;
+
+  bot.reply(message, "id: " + message.file.id + ", name: " + message.file.name + ", url: " + message.file.url_private_download);
+
+/*
+  var conn = new jsforce.Connection();
+
+  conn.login('cdegour@tisslack.demo', 'salesforce1', function(err, res){
+    if(err){
+      console.error(err);bot.reply(message, 'ran into a problem logging into sfdc: ' + err);
+    }else{
+      conn.sobject("Slack_Image__c").create({
+        slack_image_id__c:message.file.id,
+        slack_image_url__c:
+      }, function(err, ret){
+
+      });
+    }
+  });
+*/
+
+
+  //send SFDC a message to create a 
+
+  //link over to SFDC and create the post
+  //regardless of success, create the PG entry on the PG side.
+  /*
+    message.file structure
+    {
+      id, name, 
+      mimetype: "text\/plain", 
+      filetype: "text",
+      user: "", << Slack User ID
+      username: "",
+      
+    } 
+  */
+
+  /*
+
+    To push into sfdc - use v35!
+      POST: https://nax.salesforce.com/services/data/v35.0/chatter/feed-elements
+
+      set header - Content-Type=multipart/form-data
+      set header with Authorization: OAUTh...
+
+  {
+    "body":{
+      "messageSegments":[
+        {
+          "type:"Text",
+          "text": "Please accept dis"
+        }
+      ]
+    },
+    "capabilities":{
+      "content":{
+          "description" : "image from slack",
+          "title": "imagename.png"
+        }
+    },
+    "feedElementType": "FeedItem",
+    "subjectId": recordParentID
+  }
+
+    
+
+  */
+
+});
+
 
 //webservice handling
 controller.setupWebserver(process.env.port,function(err,webserver) {
@@ -293,79 +362,6 @@ controller.hears('update (.*) to (.*)', earsMentionOnly, function(bot, message){
 
 
 
-controller.on('file_public', function(bot, message){
-  bot.reply(message, "Linking to Salesforce...");
-  console.log('brah!');
-  var trueURL;
-
-  bot.reply(message, "id: " + message.file.id + ", name: " + message.file.name + ", url: " + message.file.url_private_download);
-
-/*
-  var conn = new jsforce.Connection();
-
-  conn.login('cdegour@tisslack.demo', 'salesforce1', function(err, res){
-    if(err){
-      console.error(err);bot.reply(message, 'ran into a problem logging into sfdc: ' + err);
-    }else{
-      conn.sobject("Slack_Image__c").create({
-        slack_image_id__c:message.file.id,
-        slack_image_url__c:
-      }, function(err, ret){
-
-      });
-    }
-  });
-*/
-
-
-  //send SFDC a message to create a 
-
-  //link over to SFDC and create the post
-  //regardless of success, create the PG entry on the PG side.
-  /*
-    message.file structure
-    {
-      id, name, 
-      mimetype: "text\/plain", 
-      filetype: "text",
-      user: "", << Slack User ID
-      username: "",
-      
-    } 
-  */
-
-  /*
-
-    To push into sfdc - use v35!
-      POST: https://nax.salesforce.com/services/data/v35.0/chatter/feed-elements
-
-      set header - Content-Type=multipart/form-data
-      set header with Authorization: OAUTh...
-
-  {
-    "body":{
-      "messageSegments":[
-        {
-          "type:"Text",
-          "text": "Please accept dis"
-        }
-      ]
-    },
-    "capabilities":{
-      "content":{
-          "description" : "image from slack",
-          "title": "imagename.png"
-        }
-    },
-    "feedElementType": "FeedItem",
-    "subjectId": recordParentID
-  }
-
-    
-
-  */
-
-});
 
 
 
