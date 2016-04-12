@@ -153,9 +153,46 @@ controller.setupWebserver(process.env.port,function(err,webserver) {
     channel.replace(/ /g, '%20');
     channel.replace(/#/g, '%23');
 
+    var message = req.body.message;
+    message = decodeURI(message);
+    var author_name = req.body.author_name;
+    var author_id = req.body.post_id;
+
+    var project_name = req.body.project_name;
+    var postId = req.body.project_id;
+    var project_status = req.body.project_status != null ? req.body.project_status : "No status";
+
+    var text = 'Message from Salesforce';
+    var username = "Salesforce Bot";
+
+    var attachments = [];
+    var attachment = {
+      "fallback": message,
+      "color": "#009CDB",
+      "author_name": author_name,
+      "author_link": "https://na30.salesforce.com/" + author_id,
+      "title": project_name,
+      "title_link": "https://na30.salesforce.com/" + postId,
+      "text": message,
+      "fields": [
+          {
+              "title": "Project Status",
+              "value": project_status,
+              "short": false
+          }
+      ]
+    };
+
+    attachments.push(attachment);
+    attachments = JSON.stringify(attachments);
+
     var targetURL = 'https://slack.com/api/chat.postMessage?token=xoxp-33277585748-33238216051-33306678548-b0a6ea1979' + 
       '&channel=' + channel +  
-      '&text=' + req.body.message;
+      '&text=' + encodeURIComponent(message) +
+      '&attachments=' + encodeURIComponent(attachments) + 
+      '&username=SFDC';
+
+    console.log(targetURL);
 
     https.get(targetURL, function(res2){
       var body = '';
