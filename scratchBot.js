@@ -146,16 +146,15 @@ controller.setupWebserver(process.env.port,function(err,webserver) {
     
   });
 
-  webserver.get('/postMessage', function(req, res){
-    var message = req.body.message;
-    message.replace(/ /g, '%20');
+  webserver.post('/postMessage', function(req, res){
+    console.log(req);
     
-    var channel ='';
+    var channel = req.body.channel;
     channel.replace(/ /g, '%20');
     channel.replace(/#/g, '%23');
 
     var targetURL = 'https://slack.com/api/chat.postMessage?token=xoxp-33277585748-33238216051-33306678548-b0a6ea1979' + 
-      '&channel=%23bonkers' + 
+      '&channel=' + channel +  
       '&text=' + req.body.message;
 
     https.get(targetURL, function(res2){
