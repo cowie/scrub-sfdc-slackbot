@@ -107,14 +107,16 @@ controller.on('rtm_close',function(bot) {
 });
 
 controller.on('message_received', function(bot, message){
-  bot.reply(message, "heard something: " + message.type);
-  console.log(message);
+  if(message.type != "user_typing"){
+    bot.reply(message, "heard something: " + message.type);
+    console.log(message);
+  }
 });
 
-controller.on('user_typing', function(bot){
- console.log('brah!');
-});
-
+controller.on('ambient', function(bot,message){
+    bot.reply(message, "heard you.");
+    console.log(message);
+})
 
 controller.on('file_created', function(bot){
   //bot.reply(message, "Linking to Salesforce...");
