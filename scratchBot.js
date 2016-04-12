@@ -112,11 +112,12 @@ controller.on('message_received', function(bot, message){
     console.log(message);
   }
 });
-
+/*
 controller.on('ambient', function(bot,message){
     bot.reply(message, "heard you.");
     console.log(message);
 })
+*/
 
 controller.on('file_created', function(bot){
   //bot.reply(message, "Linking to Salesforce...");
