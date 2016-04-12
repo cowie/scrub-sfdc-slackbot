@@ -113,9 +113,10 @@ controller.on('ambient', function(bot, message){
 });*/
 
 
-controller.on('channel_joined', function(bot, message){
+controller.on('user_channel_joined', function(bot, message){
+ console.log('brah!');
   bot.reply(message, "brah!");
-  console.log('brah!');
+  
 });
 
 //webservice handling
