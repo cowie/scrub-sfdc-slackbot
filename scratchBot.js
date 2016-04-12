@@ -106,6 +106,11 @@ controller.on('rtm_close',function(bot) {
   // you may want to attempt to re-open
 });
 
+controller.on('message_received', function(bot, message){
+  bot.reply(message, "heard something: " + message.type);
+  console.log(message);
+});
+
 controller.on('user_typing', function(bot){
  console.log('brah!');
 });
