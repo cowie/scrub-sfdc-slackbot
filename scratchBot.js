@@ -117,8 +117,10 @@ controller.on('file_share', function(bot, message){
   //bot.reply(message, "Linking to Salesforce...");
   console.log('brah look at that picture!');
 
-  var publicLink = message.file.permalink_public.split('-');
-  var secretCode = message.file.permalink_public[publicLink.length-1];
+  var publicLink = message.file.permalink_public;
+  var linkSplit = publicLink.split('-');
+  console.log(linkSplit);
+  var secretCode = linkSplit[linkSplit.length - 1];
   var url = message.file.url_private + '?pub_secret=' + secretCode;
   //var trueURL;
 
