@@ -257,26 +257,29 @@ controller.setupWebserver(process.env.port,function(err,webserver) {
         body += chunk;
       });
       res2.on('end', function(){
-        console.log(JSON.parse(body));
+        //console.log(JSON.parse(body));
         resp1 = JSON.parse(body);
         //res.send(JSON.parse(body));
         channelID = JSON.parse(body).channel.id;
+        console.log("**CHANNEL CREATED**")
+        targetURL = "https://slack.com/api/channels.invite?token=xoxp-33277585748-33238216051-33306678548-b0a6ea1979' + &channel=" + channelID + "&user=" + botID;
+        console.log("aiming at " + targetURL);
+        https.get(targetURL, function(res3){
+          var body2 = '';
+          res3.on('data', function(chunk){
+            body2 += chunk;
+          });
+          res3.on('end', function(){
+            console.log("INVIIIITE");
+            console.log(JSON.parse(body));
+            console.log("INVITE SENT");
+            res.send(body + body2);
+          });
+        });
       });
     });
-
     //auto-invite bot of ID U0Z8R0K0D
-    targetURL = "https://slack.com/api/channels.invite?token=xoxp-33277585748-33238216051-33306678548-b0a6ea1979' + &channel=" + channelID + "&user=" + botID;
-    https.get(targetURL, function(res2){
-      var body ='';
-      res2.on('data', function(chunk){
-        body += chunk;
-      });
-      res2.on('end', function(){
-        console.log(JSON.parse(body));
-        resp2 = JSON.parse(body);
-        res.send(resp1 + "...\n\r" + resp2);
-      });
-    });
+
   });
 
   webserver.post('/postMessage', function(req, res){
