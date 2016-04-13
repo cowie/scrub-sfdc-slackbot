@@ -260,7 +260,7 @@ controller.setupWebserver(process.env.port,function(err,webserver) {
         console.log(JSON.parse(body));
         resp1 = JSON.parse(body);
         //res.send(JSON.parse(body));
-        channelID = res2.channel.id;
+        channelID = body.channel.id;
       });
     });
 
