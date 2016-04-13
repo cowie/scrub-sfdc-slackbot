@@ -124,7 +124,9 @@ controller.on('file_share', function(bot, message){
   var url = message.file.url_private + '?pub_secret=' + secretCode;
   //var trueURL;
 
-  var targetURL = 'https://slack.com/api/channels.create?token=xoxp-33277585748-33238216051-33306678548-b0a6ea1979&file=' + message.id;
+  console.log(message.file);
+
+  var targetURL = 'https://slack.com/api/files.sharedPublicURL?token=xoxp-33277585748-33238216051-33306678548-b0a6ea1979&file=' + message.file.id;
 
   https.get(targetURL, function(res2){
     var body = '';
@@ -230,7 +232,7 @@ controller.setupWebserver(process.env.port,function(err,webserver) {
     console.log(chanName);
 
     
-    var targetURL = 'https://slack.com/api/channels.create?token=xoxp-33277585748-33238216051-33306678548-b0a6ea1979' + '&name=' +chanName;
+    var targetURL = 'https://slack.com/api/channels.create?token=xoxp-33277585748-33238216051-33306678548-b0a6ea1979' + '&name=' + chanName;
     //var inviteURL = 'https://slack.com/api/channels.invite?token=xoxp-33277585748-33238216051-33306678548-b0a6ea1979&channel=_general&user=sfdc_ninja';
 
     https.get(targetURL, function(res2){
