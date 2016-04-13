@@ -343,11 +343,12 @@ controller.setupWebserver(process.env.port,function(err,webserver) {
     });
   });
   
+  
   webserver.post('/addFileComment', function(req, res){
     console.log(req);
     var targetURL = 'https://slack.com/api/files.comments.add?token=xoxp-33277585748-33462109169-33744710691-4232aafb55' +
-    '&file=F10CRGAE9' + 
-    '&comment=Hey%20comments%20through%20api%3F';
+    '&file=' + req.body.file_id + 
+    '&comment=' + req.body.comment;
 
     https.get(targetURL, function(res2){
       var body = '';
@@ -360,6 +361,7 @@ controller.setupWebserver(process.env.port,function(err,webserver) {
       });
     });
   });
+
 
   controller.createWebhookEndpoints(controller.webserver);
 
