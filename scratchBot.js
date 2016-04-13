@@ -118,7 +118,7 @@ controller.on('file_share', function(bot, message){
   console.log('brah look at that picture!');
 
   var publicLink = message.file.permalink_public.split('-');
-  var secretCode = message.file.permalink_public[publicLink.length];
+  var secretCode = message.file.permalink_public[publicLink.length-1];
   var url = message.file.url_private + '?pub_secret=' + secretCode;
   //var trueURL;
 
