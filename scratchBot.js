@@ -502,6 +502,7 @@ controller.hears(['remove admin (.*)'], 'direct_message', function(bot, message)
 
 controller.hears(['am I an admin'], 'direct_message', function(bot, message){
   //admin check
+  //uncrash
   var isAdmin = false;
   controller.storage.users.get(message.user, function(err, user){
     isAdmin = user.admin;
