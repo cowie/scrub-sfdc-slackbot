@@ -106,12 +106,6 @@ controller.on('rtm_close',function(bot) {
   // you may want to attempt to re-open
 });
 
-controller.on('message_received', function(bot, message){
-  if(message.type != "user_typing"){
-    bot.reply(message, "heard something: " + message.type);
-    console.log(message);
-  }
-});
 /*
 controller.on('ambient', function(bot,message){
     bot.reply(message, "heard you.");
@@ -122,9 +116,13 @@ controller.on('ambient', function(bot,message){
 controller.on('file_share', function(bot, message){
   //bot.reply(message, "Linking to Salesforce...");
   console.log('brah look at that picture!');
+
+  var publicLink = message.file.permalink_public.split('-');
+  var secretCode = message.file.permalink_public[publicLink.length];
+  var url = message.file.url_private + '?pub_secret=' + secretCode;
   //var trueURL;
 
-  //bot.reply(message, "id: " + message.file.id + ", name: " + message.file.name + ", url: " + message.file.url_private_download);
+  bot.reply(message, "This is a public link: " + url);
 
 /*
   var conn = new jsforce.Connection();
