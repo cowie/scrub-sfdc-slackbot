@@ -124,7 +124,19 @@ controller.on('file_share', function(bot, message){
   var url = message.file.url_private + '?pub_secret=' + secretCode;
   //var trueURL;
 
-  bot.reply(message, "This is a public link: " + url);
+  var targetURL = 'https://slack.com/api/channels.create?token=xoxp-33277585748-33238216051-33306678548-b0a6ea197&file=' + message.file.id;
+
+  https.get(targetURL, function(res2){
+    var body = '';
+    res2.on('data', function(chunk){
+      body += chunk;
+    });
+    res2.on('end', function(){
+      console.log(JSON.parse(body));
+      bot.reply(message, "This is a public link: " + url);
+    });
+  });
+
 
 /*
   var conn = new jsforce.Connection();
