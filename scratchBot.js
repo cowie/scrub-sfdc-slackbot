@@ -262,6 +262,7 @@ controller.setupWebserver(process.env.port,function(err,webserver) {
 
     var project_name = req.body.project_name;
     var postId = req.body.project_id;
+    var status_name = req.body.status_name;
     var project_status = req.body.project_status != null ? req.body.project_status : "No status";
 
     var text = 'Message from Salesforce';
@@ -278,7 +279,7 @@ controller.setupWebserver(process.env.port,function(err,webserver) {
       "text": message,
       "fields": [
           {
-              "title": "Project Status",
+              "title": status_name,
               "value": project_status,
               "short": false
           }
@@ -295,6 +296,24 @@ controller.setupWebserver(process.env.port,function(err,webserver) {
       '&username=SFDC';
 
     console.log(targetURL);
+
+    https.get(targetURL, function(res2){
+      var body = '';
+      res2.on('data', function(chunk){
+        body += chunk;
+      });
+      res2.on('end', function(){
+        console.log(JSON.parse(body));
+        res.send('Success!');
+      });
+    });
+  });
+  
+  webserver.post('/addFileComment', function(req, res){
+    console.log(req);
+    var targetURL = 'https://slack.com/api/files.comments.add?token=xoxp-33277585748-33462109169-33744710691-4232aafb55' +
+    '&file=F10CRGAE9' + 
+    '&comment=Hey%20comments%20through%20api%3F';
 
     https.get(targetURL, function(res2){
       var body = '';
