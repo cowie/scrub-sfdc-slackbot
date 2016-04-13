@@ -262,7 +262,7 @@ controller.setupWebserver(process.env.port,function(err,webserver) {
         //res.send(JSON.parse(body));
         channelID = JSON.parse(body).channel.id;
         console.log("**CHANNEL CREATED**")
-        targetURL = "https://slack.com/api/channels.invite?token=xoxp-33277585748-33238216051-33306678548-b0a6ea1979' + &channel=" + channelID + "&user=" + botID;
+        targetURL = "https://slack.com/api/channels.invite?token=xoxp-33277585748-33238216051-33306678548-b0a6ea1979" + "&channel=" + channelID + "&user=" + botID;
         console.log("aiming at " + targetURL);
         https.get(targetURL, function(res3){
           var body2 = '';
