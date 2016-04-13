@@ -38,10 +38,20 @@ var jsforce = require('jsforce');
 
 require('./env.js');
 
+
+//lazy vars
+var botID = "U0Z8R0K0D";
+var cdgID = "U0Z706C1H";
+var hanulID = "U0ZDL374Z";
+
+
 if (!process.env.clientId || !process.env.clientSecret || !process.env.port) {
   console.log('Error: Specify clientId clientSecret and port in environment');
   process.exit(1);
 }
+
+
+
 
 
 var controller = Botkit.slackbot({
@@ -235,6 +245,10 @@ controller.setupWebserver(process.env.port,function(err,webserver) {
     var targetURL = 'https://slack.com/api/channels.create?token=xoxp-33277585748-33238216051-33306678548-b0a6ea1979' + '&name=' + chanName;
     //var inviteURL = 'https://slack.com/api/channels.invite?token=xoxp-33277585748-33238216051-33306678548-b0a6ea1979&channel=_general&user=sfdc_ninja';
 
+    var channelID;
+    var resp1;
+    var resp2;
+
     https.get(targetURL, function(res2){
       var body = '';
       res2.on('data', function(chunk){
@@ -242,10 +256,28 @@ controller.setupWebserver(process.env.port,function(err,webserver) {
       });
       res2.on('end', function(){
         console.log(JSON.parse(body));
-        res.send(JSON.parse(body));
+        resp1 = JSON.parse(body);
+        //res.send(JSON.parse(body));
+        channelID = res2.channel.id;
       });
     });
-    
+
+    //auto-invite bot of ID U0Z8R0K0D
+    targetURL = "https://slack.com/api/channels.invite?token=xoxp-33277585748-33238216051-33306678548-b0a6ea1979' + &channel=" + channelID + "&user=" + botID;
+    https.get(targetURL, function(res2){
+      var body ='';
+      res2.on('data', function(chunk){
+        body += chunk;
+      });
+      res2.on('end', function(){
+        console.log(JSON.parse(body));
+        resp2 = JSON.parse(body);
+        res.send(resp1 + "...\n\r" + resp2);
+      }
+    });
+
+
+
   });
 
   webserver.post('/postMessage', function(req, res){
