@@ -401,7 +401,7 @@ controller.hears('update (.*) to (.*)', earsMentionOnly, function(bot, message){
               }else{
                 console.log('updated, adn got message back');
                 var fieldName = message.match[1];
-                fieldName = charAt(0).toUpperCase() + fieldName.slice(1);
+                fieldName = fieldName.charAt(0).toUpperCase() + fieldName.slice(1);
                 var attachments = [];
                 var attach = {
                   fallback: "Successful update. Set " + message.match[1] + " to the value of " + value,
