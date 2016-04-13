@@ -149,6 +149,8 @@ controller.on('file_share', function(bot, message){
     });
   });
 
+  //todo - pipe into sfdc
+
 
 /*
   var conn = new jsforce.Connection();
@@ -273,11 +275,8 @@ controller.setupWebserver(process.env.port,function(err,webserver) {
         console.log(JSON.parse(body));
         resp2 = JSON.parse(body);
         res.send(resp1 + "...\n\r" + resp2);
-      }
+      });
     });
-
-
-
   });
 
   webserver.post('/postMessage', function(req, res){
@@ -428,15 +427,37 @@ controller.hears('update (.*) to (.*)', earsMentionOnly, function(bot, message){
   });
 
 });
-//USECASE 4: HEAR message w attachment, send attachment to SFDC.
-
-
-
-
-
 
 
 //respond to hello
+
+
+controller.hears(['list T1 cases'], earsEverywhere, function(bot,message){
+  pg.connect(conString, function(err, client, done){
+    if(err){
+      console.error(err);bot.reply(message, "error connecting to postgres - " + err);
+    }else{
+      client.query("SELECT Id, AccountId, CaseNumber, Channel__c, ContactId, Cost__c, CreatedDate, OwnerId, Priority, Status, Subject, Description FROM Salesforce.Case WHERE OwnerId = '00G360000012GmfEAE'",
+        function(err, result){
+          if(err){
+            console.error(err);bot.reply(message, "error making query - " + err);
+          }else{
+            console.log('YUPPPP');
+            bot.reply(message, "Here are all the Tier 1 queue cases currently");
+            var row;
+            console.log(result.rows);
+            for(var x=0; x<result.rows.length; x++){
+              row = result.rows[x];
+              console.log(row);
+              bot.reply(message, "*: " + row.casenumber + " | " + row.status + " | " + row.subject);
+            
+            }
+            bot.reply(message, "End case list");
+          }
+        });
+    }
+  });
+});
 controller.hears(['hello', 'hi'],earsEverywhere,function(bot,message) {
 
   controller.storage.users.get(message.user, function(err,user){
@@ -610,34 +631,6 @@ controller.hears(['shutdown'], earsEverywhere, function(bot,message){
     }
   });
 });
-
-controller.hears(['list T1 cases'], earsEverywhere, function(bot,message){
-  pg.connect(conString, function(err, client, done){
-    if(err){
-      console.error(err);bot.reply(message, "error connecting to postgres - " + err);
-    }else{
-      client.query("SELECT Id, AccountId, CaseNumber, Channel__c, ContactId, Cost__c, CreatedDate, OwnerId, Priority, Status, Subject, Description FROM Salesforce.Case WHERE OwnerId = '00G360000012GmfEAE'",
-        function(err, result){
-          if(err){
-            console.error(err);bot.reply(message, "error making query - " + err);
-          }else{
-            console.log('YUPPPP');
-            bot.reply(message, "Here are all the Tier 1 queue cases currently");
-            var row;
-            console.log(result.rows);
-            for(var x=0; x<result.rows.length; x++){
-              row = result.rows[x];
-              console.log(row);
-              bot.reply(message, "*: " + row.casenumber + " | " + row.status + " | " + row.subject);
-            
-            }
-            bot.reply(message, "End case list");
-          }
-        });
-    }
-  });
-});
-
 /*
 controller.hears('^stop',['direct_message', 'direct_mention'],function(bot,message) {
   bot.reply(message,'Goodbye');
