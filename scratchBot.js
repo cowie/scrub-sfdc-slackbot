@@ -163,12 +163,12 @@ controller.on('file_share', function(bot, message){
           console.error(err);bot.reply(message, "error connecting to postgres - " + err);
         }else{
 
-          client.query("SELECT Id FROM Salesforce.Project__c WHERE Slack_Channel_Id__c = '" + channelID + "'", function(err, result){
+          client.query("SELECT sfid FROM Salesforce.Project__c WHERE Slack_Channel_Id__c = '" + channelID + "'", function(err, result){
             if(err){
               console.error(err);bot.reply(message, "error connecting to postgres - " + err);
             }else{
               //we now have the ID for the project.
-              var projectID = result.rows[0].id;
+              var projectID = result.rows[0].sfid;
               console.log('project id is '+ projectID);
               var conn = new jsforce.Connection();
               conn.login('cdegour@ticslack.demo', 'salesforce1', function(err,res){
@@ -396,7 +396,7 @@ controller.hears('update (.*) to (.*)', earsMentionOnly, function(bot, message){
             console.error(err);bot.reply(message, "error making update - " + err);
           }else{
             console.log("Update went through");
-            client.query("SELECT Id, Name, Description__c FROM Salesforce.Project__C WHERE Slack_Channel_Id__c = '" + channelID + "'", function(err2, result2){
+            client.query("SELECT sfid, Name, Description__c FROM Salesforce.Project__C WHERE Slack_Channel_Id__c = '" + channelID + "'", function(err2, result2){
               if(err2){
                 console.error(err2);bot.reply(message, "error getting data, but update was successful - " + err2);
               }else{
@@ -409,7 +409,7 @@ controller.hears('update (.*) to (.*)', earsMentionOnly, function(bot, message){
                   color: "00A1E0",
                   pretext: "Update Successful",
                   title: result2.rows[0].name,
-                  title_link: "https://na30.salesforce.com/" + result2.rows[0].id,
+                  title_link: "https://na30.salesforce.com/" + result2.rows[0].sfid,
                   text: result2.rows[0].description__c,
                   fields:[
                     {
