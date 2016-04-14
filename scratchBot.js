@@ -175,6 +175,9 @@ controller.on('file_share', function(bot, message){
                 if(err){
                   console.error(err);bot.reply(message, 'ran into a problem logging into sfdc: ' + err);
                 }else{
+                  if(username == botID){username = "sfdc_ninja";}
+                  else if(username == cdgID){username = "cdegour";}
+                  else if(username == hanulID){username = "hanulpark";}
                   conn.sobject("Project_File__c").create({
                     file_id__c:fileID,
                     file_link__c:url,
@@ -184,7 +187,17 @@ controller.on('file_share', function(bot, message){
                     username__c:username
                   }, function(err, ret){
                     console.log("HOLY F IT WORKED");
-                    bot.reply(message, "Sup dawg, Saw you have a picture. SFDC WOULD LIKE TO SEE THAT. YOINK!");
+                    var attachments = [];
+                    var attach = {
+                      fallback: "Successful sync into Salesforce",
+                      color: "00A1E0",
+                      pretext: "Picture sync confirmation",
+                      title: filename,
+                      title_link: "https://na30.salesforce.com/" + projectID
+                      text: "Click link to view in Salesforce. All comments will be mapped across to both systems from this point."
+                    }
+                    attachments.push(attach);
+                    bot.reply(message, {text:"", attachments:attachments});
                   });
                 }
               });
@@ -192,6 +205,28 @@ controller.on('file_share', function(bot, message){
           })  
         }
       })
+/*
+
+var attachments = [];
+                var attach = {
+                  fallback: "Successful update. Set " + message.match[1] + " to the value of " + value,
+                  color: "00A1E0",
+                  pretext: "Update Successful",
+                  title: result2.rows[0].name,
+                  title_link: "https://na30.salesforce.com/" + result2.rows[0].sfid,
+                  text: result2.rows[0].description__c,
+                  fields:[
+                    {
+                      "title": fieldName,
+                      "value": value,
+                      "short": false
+                    }
+                  ]
+                } 
+                attachments.push(attach);
+                console.log(result2.rows[0]);
+                bot.reply(message, {text: "", attachments:attachments}, function(err, resp){console.log(err, resp);})  
+
 
       //todo - pipe into sfdc
       var conn = new jsforce.Connection();
@@ -199,6 +234,8 @@ controller.on('file_share', function(bot, message){
         if(err){
           console.error(err);bot.reply(message, 'ran into a problem logging into sfdc: ' + err);
         }else{
+
+
           conn.sobject("Project_File__c").create({
             file_id__c:fileID,
             file_link__c:url,
@@ -210,7 +247,7 @@ controller.on('file_share', function(bot, message){
 
           });
         }
-      });
+      });*/
 
 
     });
