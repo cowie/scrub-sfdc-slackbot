@@ -155,7 +155,7 @@ controller.on('file_share', function(bot, message){
     });
     res2.on('end', function(){
       console.log(JSON.parse(body));
-      bot.reply(message, "This is a public link: " + url);
+      //bot.reply(message, "This is a public link: " + url);
 
       //query to get the projectID from the channel.
       pg.connect(conString, function(err, client, done){
@@ -163,7 +163,7 @@ controller.on('file_share', function(bot, message){
           console.error(err);bot.reply(message, "error connecting to postgres - " + err);
         }else{
 
-          client.Query("SELECT Id FROM Project__c WHERE Slack_Channel_Id__c = '" + channelID + "'", function(err, result){
+          client.query("SELECT Id FROM Project__c WHERE Slack_Channel_Id__c = '" + channelID + "'", function(err, result){
             if(err){
               console.error(err);bot.reply(message, "error connecting to postgres - " + err);
             }else{
