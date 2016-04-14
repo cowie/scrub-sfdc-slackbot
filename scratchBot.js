@@ -163,7 +163,7 @@ controller.on('file_share', function(bot, message){
           console.error(err);bot.reply(message, "error connecting to postgres - " + err);
         }else{
 
-          client.query("SELECT Id FROM Project__c WHERE Slack_Channel_Id__c = '" + channelID + "'", function(err, result){
+          client.query("SELECT Id FROM Salesforce.Project__c WHERE Slack_Channel_Id__c = '" + channelID + "'", function(err, result){
             if(err){
               console.error(err);bot.reply(message, "error connecting to postgres - " + err);
             }else{
