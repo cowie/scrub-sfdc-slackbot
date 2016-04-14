@@ -437,7 +437,7 @@ controller.hears('update (.*) to (.*)', earsMentionOnly, function(bot, message){
                 } 
                 attachments.push(attach);
                 console.log('sending bot reply');
-                bot.reply(message, {text: "", attachments:attachments}, function(err, resp){console.log('bot sent');console.log(err, resp);});   
+                bot.reply(message, {text: "Update!", attachments:attachments}, function(err, resp){console.log('bot sent');console.log(err, resp);});   
               }
             });
             //bot.reply(message, "Successfully updated project, setting " + message.match[1] + " to the value of " + value + " inside Salesforce.");
