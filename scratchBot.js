@@ -1,26 +1,5 @@
-/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-           ______     ______     ______   __  __     __     ______
-          /\  == \   /\  __ \   /\__  _\ /\ \/ /    /\ \   /\__  _\
-          \ \  __<   \ \ \/\ \  \/_/\ \/ \ \  _"-.  \ \ \  \/_/\ \/
-           \ \_____\  \ \_____\    \ \_\  \ \_\ \_\  \ \_\    \ \_\
-            \/_____/   \/_____/     \/_/   \/_/\/_/   \/_/     \/_/
-
-
-This is a sample Slack Button application that adds a bot to one or many slack teams.
-
-# RUN THE APP:
-  Create a Slack app. Make sure to configure the bot user!
-    -> https://api.slack.com/applications/new
-    -> Add the Redirect URI: http://localhost:3000/oauth
-  Run your bot from the command line:
-    clientId=<my client id> clientSecret=<my client secret> port=3000 node slackbutton_bot.js
-# USE THE APP
-  Add the app to your Slack by visiting the login page:
-    -> http://localhost:3000/login
-  After you've added the app, try talking to your bot!
-# EXTEND THE APP:
-  Botkit is has many features for building cool and useful bots!
-  Read all about it here:
+/*
+  Based off botkit - find that here
     -> http://howdy.ai/botkit
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
@@ -457,8 +436,8 @@ controller.hears('update (.*) to (.*)', earsMentionOnly, function(bot, message){
                   ]
                 } 
                 attachments.push(attach);
-                console.log(result2.rows[0]);
-                bot.reply(message, {text: "", attachments:attachments}, function(err, resp){console.log(err, resp);})   
+                console.log('sending bot reply');
+                bot.reply(message, {text: "", attachments:attachments}, function(err, resp){console.log('bot sent');console.log(err, resp);});   
               }
             });
             //bot.reply(message, "Successfully updated project, setting " + message.match[1] + " to the value of " + value + " inside Salesforce.");
