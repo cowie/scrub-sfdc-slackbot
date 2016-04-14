@@ -139,7 +139,7 @@ controller.on('file_share', function(bot, message){
   //filename
   var filename = message.file.name;
   //filetype
-  var filetype = message.file.type;
+  var filetype = message.file.filetype;
   //projrect__c
   var channelID = message.channel;
   //username
