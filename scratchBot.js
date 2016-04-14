@@ -132,9 +132,19 @@ controller.on('file_share', function(bot, message){
   console.log(linkSplit);
   var secretCode = linkSplit[linkSplit.length - 1];
   var url = message.file.url_private + '?pub_secret=' + secretCode;
-  //var trueURL;
-
   console.log(message.file);
+
+  //file ID
+  var fileID = message.file.id;
+  //filename
+  var filename = message.file.name;
+  //filetype
+  var filetype = message.file.mimetype;
+  //projrect__c
+  var channelID = message.channel;
+  //username
+  var username = message.user;
+
 
   var targetURL = 'https://slack.com/api/files.sharedPublicURL?token=xoxp-33277585748-33238216051-33306678548-b0a6ea1979&file=' + message.file.id;
 
@@ -146,76 +156,62 @@ controller.on('file_share', function(bot, message){
     res2.on('end', function(){
       console.log(JSON.parse(body));
       bot.reply(message, "This is a public link: " + url);
+
+      //query to get the projectID from the channel.
+      pg.connect(conString, function(err, client, done){
+        if(err){
+          console.error(err);bot.reply(message, "error connecting to postgres - " + err);
+        }else{
+          client.Query("SELECT Id FROM Project__c WHERE Slack_Channel_Id__c = '" + channelID + "'", function(err, result){
+            if(err){
+              console.error(err);bot.reply(message, "error connecting to postgres - " + err);
+            }else{
+              //we now have the ID for the project.
+              var projectID = result.rows[0].id;
+              var conn = new jsforce.Connection();
+              conn.login('cdegour@ticslack.demo', 'salesforce1', function(err,res){
+                if(err){
+                  console.error(err);bot.reply(message, 'ran into a problem logging into sfdc: ' + err);
+                }else{
+                  conn.sobject("Project_File__c").create({
+                    file_id__c:fileID,
+                    file_link__c:url,
+                    file_name__c:filename,
+                    file_type__c:filetype,
+                    project__c:projectID,
+                    username__c:username
+                  }, function(err, ret){
+                    bot.reply(message, );
+                  });
+                }
+              });
+            }
+          })  
+        }
+      })
+
+      //todo - pipe into sfdc
+      var conn = new jsforce.Connection();
+      conn.login('cdegour@ticslack.demo', 'salesforce1', function(err,res){
+        if(err){
+          console.error(err);bot.reply(message, 'ran into a problem logging into sfdc: ' + err);
+        }else{
+          conn.sobject("Project_File__c").create({
+            file_id__c:fileID,
+            file_link__c:url,
+            file_name__c:filename,
+            file_type__c:filetype,
+            project__c:"",
+            username__c:username
+          }, function(err, ret){
+
+          });
+        }
+      });
+
+
     });
   });
-
-  //todo - pipe into sfdc
-
-
-/*
-  var conn = new jsforce.Connection();
-
-  conn.login('cdegour@tisslack.demo', 'salesforce1', function(err, res){
-    if(err){
-      console.error(err);bot.reply(message, 'ran into a problem logging into sfdc: ' + err);
-    }else{
-      conn.sobject("Slack_Image__c").create({
-        slack_image_id__c:message.file.id,
-        slack_image_url__c:
-      }, function(err, ret){
-
-      });
-    }
-  });
-*/
-
-
-  //send SFDC a message to create a 
-
-  //link over to SFDC and create the post
-  //regardless of success, create the PG entry on the PG side.
-  /*
-    message.file structure
-    {
-      id, name, 
-      mimetype: "text\/plain", 
-      filetype: "text",
-      user: "", << Slack User ID
-      username: "",
-      
-    } 
-  */
-
-  /*
-
-    To push into sfdc - use v35!
-      POST: https://nax.salesforce.com/services/data/v35.0/chatter/feed-elements
-
-      set header - Content-Type=multipart/form-data
-      set header with Authorization: OAUTh...
-
-  {
-    "body":{
-      "messageSegments":[
-        {
-          "type:"Text",
-          "text": "Please accept dis"
-        }
-      ]
-    },
-    "capabilities":{
-      "content":{
-          "description" : "image from slack",
-          "title": "imagename.png"
-        }
-    },
-    "feedElementType": "FeedItem",
-    "subjectId": recordParentID
-  }
-
-    
-
-  */
 
 });
 
