@@ -193,7 +193,7 @@ controller.on('file_share', function(bot, message){
                       color: "00A1E0",
                       pretext: "Picture sync confirmation",
                       title: filename,
-                      title_link: "https://na30.salesforce.com/" + projectID
+                      title_link: "https://na30.salesforce.com/" + projectID,
                       text: "Click link to view in Salesforce. All comments will be mapped across to both systems from this point."
                     }
                     attachments.push(attach);
