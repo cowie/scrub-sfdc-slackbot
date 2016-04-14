@@ -162,12 +162,14 @@ controller.on('file_share', function(bot, message){
         if(err){
           console.error(err);bot.reply(message, "error connecting to postgres - " + err);
         }else{
+
           client.Query("SELECT Id FROM Project__c WHERE Slack_Channel_Id__c = '" + channelID + "'", function(err, result){
             if(err){
               console.error(err);bot.reply(message, "error connecting to postgres - " + err);
             }else{
               //we now have the ID for the project.
               var projectID = result.rows[0].id;
+              console.log('project id is '+ projectID);
               var conn = new jsforce.Connection();
               conn.login('cdegour@ticslack.demo', 'salesforce1', function(err,res){
                 if(err){
@@ -181,7 +183,8 @@ controller.on('file_share', function(bot, message){
                     project__c:projectID,
                     username__c:username
                   }, function(err, ret){
-                    bot.reply(message, );
+                    console.log("HOLY F IT WORKED");
+                    bot.reply(message, "Sup dawg, Saw you have a picture. SFDC WOULD LIKE TO SEE THAT. YOINK!");
                   });
                 }
               });
