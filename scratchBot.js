@@ -338,7 +338,7 @@ controller.setupWebserver(process.env.port,function(err,webserver) {
       "author_link": "https://na30.salesforce.com/" + author_id,
       "title": project_name,
       "title_link": "https://na30.salesforce.com/" + postId,
-      "text": "New chatter post from Salesforce",
+      "text": "",
       "fields": [
           {
               "title": "",
@@ -353,7 +353,7 @@ controller.setupWebserver(process.env.port,function(err,webserver) {
 
     var targetURL = 'https://slack.com/api/chat.postMessage?token=xoxp-33277585748-33238216051-33306678548-b0a6ea1979' + 
       '&channel=' + channel +  
-      '&text=' + "" +
+      '&text=' + "New Chatter Post from Salesforce" +
       '&attachments=' + encodeURIComponent(attachments) + 
       '&username=SFDC';
 
