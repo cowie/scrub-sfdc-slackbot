@@ -95,12 +95,7 @@ controller.on('rtm_close',function(bot) {
   // you may want to attempt to re-open
 });
 
-/*
-controller.on('ambient', function(bot,message){
-    bot.reply(message, "heard you.");
-    console.log(message);
-})
-*/
+
 
 controller.on('file_share', function(bot, message){
   //bot.reply(message, "Linking to Salesforce...");
@@ -184,49 +179,6 @@ controller.on('file_share', function(bot, message){
           })  
         }
       })
-/*
-
-var attachments = [];
-                var attach = {
-                  fallback: "Successful update. Set " + message.match[1] + " to the value of " + value,
-                  color: "00A1E0",
-                  pretext: "Update Successful",
-                  title: result2.rows[0].name,
-                  title_link: "https://na30.salesforce.com/" + result2.rows[0].sfid,
-                  text: result2.rows[0].description__c,
-                  fields:[
-                    {
-                      "title": fieldName,
-                      "value": value,
-                      "short": false
-                    }
-                  ]
-                } 
-                attachments.push(attach);
-                console.log(result2.rows[0]);
-                bot.reply(message, {text: "", attachments:attachments}, function(err, resp){console.log(err, resp);})  
-
-
-      //todo - pipe into sfdc
-      var conn = new jsforce.Connection();
-      conn.login('cdegour@ticslack.demo', 'salesforce1', function(err,res){
-        if(err){
-          console.error(err);bot.reply(message, 'ran into a problem logging into sfdc: ' + err);
-        }else{
-
-
-          conn.sobject("Project_File__c").create({
-            file_id__c:fileID,
-            file_link__c:url,
-            file_name__c:filename,
-            file_type__c:filetype,
-            project__c:"",
-            username__c:username
-          }, function(err, ret){
-
-          });
-        }
-      });*/
 
 
     });
@@ -358,6 +310,66 @@ controller.setupWebserver(process.env.port,function(err,webserver) {
     });
   });
   
+  webserver.post('/postChatterMessage', function(req, res){
+    console.log(req);
+    
+    var channel = req.body.channel;
+    channel.replace(/ /g, '%20');
+    channel.replace(/#/g, '%23');
+
+    var message = req.body.message;
+    message = decodeURI(message);
+    var author_name = req.body.author_name;
+    var author_id = req.body.post_id;
+
+    var project_name = req.body.project_name;
+    var postId = req.body.project_id;
+    var status_name = req.body.status_name;
+    var project_status = req.body.project_status != null ? req.body.project_status : "No status";
+
+    var text = 'Message from Salesforce';
+    var username = "Salesforce Bot";
+
+    var attachments = [];
+    var attachment = {
+      "fallback": "New chatter post in Salesforce",
+      "color": "#009CDB",
+      "author_name": author_name,
+      "author_link": "https://na30.salesforce.com/" + author_id,
+      "title": project_name,
+      "title_link": "https://na30.salesforce.com/" + postId,
+      "text": "New chatter post from Salesforce",
+      "fields": [
+          {
+              "title": "",
+              "value": message,
+              "short": false
+          }
+      ]
+    };
+
+    attachments.push(attachment);
+    attachments = JSON.stringify(attachments);
+
+    var targetURL = 'https://slack.com/api/chat.postMessage?token=xoxp-33277585748-33238216051-33306678548-b0a6ea1979' + 
+      '&channel=' + channel +  
+      '&text=' + "" +
+      '&attachments=' + encodeURIComponent(attachments) + 
+      '&username=SFDC';
+
+    console.log(targetURL);
+
+    https.get(targetURL, function(res2){
+      var body = '';
+      res2.on('data', function(chunk){
+        body += chunk;
+      });
+      res2.on('end', function(){
+        console.log(JSON.parse(body));
+        res.send('Success!');
+      });
+    });
+  });
   
   webserver.post('/addFileComment', function(req, res){
     console.log(req);
