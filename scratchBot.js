@@ -373,7 +373,8 @@ controller.setupWebserver(process.env.port,function(err,webserver) {
   
   webserver.post('/addFileComment', function(req, res){
     console.log(req);
-    var targetURL = 'https://slack.com/api/files.comments.add?token=xoxp-33277585748-33462109169-33744710691-4232aafb55' +
+    //var targetURL = 'https://slack.com/api/files.comments.add?token=xoxp-33277585748-33462109169-33744710691-4232aafb55' +
+    var targetURL = 'https://slack.com/api/files.comments.add?token=xoxp-33277585748-33238216051-33306678548-b0a6ea1979' +
     '&file=' + req.body.file_id + 
     '&comment=' + req.body.comment;
 
