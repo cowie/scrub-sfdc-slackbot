@@ -18,10 +18,10 @@ var jsforce = require('jsforce');
 require('./env.js');
 
 
-//lazy vars
-var botID = "U0Z8R0K0D";
-var cdgID = "U0Z706C1H";
-var hanulID = "U0ZDL374Z";
+//lazy vars 
+var botID = "";
+var cdgID = "";
+var hanulID = "";
 
 
 if (!process.env.clientId || !process.env.clientSecret || !process.env.port) {
@@ -120,7 +120,7 @@ controller.on('file_share', function(bot, message){
   var username = message.user;
 
 
-  var targetURL = 'https://slack.com/api/files.sharedPublicURL?token=xoxp-33277585748-33238216051-33306678548-b0a6ea1979&file=' + message.file.id;
+  var targetURL = 'https://slack.com/api/files.sharedPublicURL?token=TEST_TOKEN&file=' + message.file.id;
 
   https.get(targetURL, function(res2){
     var body = '';
@@ -145,7 +145,7 @@ controller.on('file_share', function(bot, message){
               var projectID = result.rows[0].sfid;
               console.log('project id is '+ projectID);
               var conn = new jsforce.Connection();
-              conn.login('cdegour@ticslack.demo', 'salesforce1', function(err,res){
+              conn.login('USERNAME', 'PASSWORD', function(err,res){
                 if(err){
                   console.error(err);bot.reply(message, 'ran into a problem logging into sfdc: ' + err);
                 }else{
@@ -211,8 +211,8 @@ controller.setupWebserver(process.env.port,function(err,webserver) {
     console.log(chanName);
 
     
-    var targetURL = 'https://slack.com/api/channels.create?token=xoxp-33277585748-33238216051-33306678548-b0a6ea1979' + '&name=' + chanName;
-    //var inviteURL = 'https://slack.com/api/channels.invite?token=xoxp-33277585748-33238216051-33306678548-b0a6ea1979&channel=_general&user=sfdc_ninja';
+    var targetURL = 'https://slack.com/api/channels.create?token=TEST_TOKEN' + '&name=' + chanName;
+    
 
     var channelID;
     var resp1;
@@ -229,7 +229,7 @@ controller.setupWebserver(process.env.port,function(err,webserver) {
         //res.send(JSON.parse(body));
         channelID = JSON.parse(body).channel.id;
         console.log("**CHANNEL CREATED**")
-        targetURL = "https://slack.com/api/channels.invite?token=xoxp-33277585748-33238216051-33306678548-b0a6ea1979" + "&channel=" + channelID + "&user=" + botID;
+        targetURL = "https://slack.com/api/channels.invite?token=TEST_TOKEN" + "&channel=" + channelID + "&user=" + botID;
         console.log("aiming at " + targetURL);
         https.get(targetURL, function(res3){
           var body2 = '';
@@ -290,7 +290,7 @@ controller.setupWebserver(process.env.port,function(err,webserver) {
     attachments.push(attachment);
     attachments = JSON.stringify(attachments);
 
-    var targetURL = 'https://slack.com/api/chat.postMessage?token=xoxp-33277585748-33238216051-33306678548-b0a6ea1979' + 
+    var targetURL = 'https://slack.com/api/chat.postMessage?token=TEST_TOKEN' + 
       '&channel=' + channel +  
       '&text=' + encodeURIComponent(message) +
       '&attachments=' + encodeURIComponent(attachments) + 
@@ -351,7 +351,7 @@ controller.setupWebserver(process.env.port,function(err,webserver) {
     attachments.push(attachment);
     attachments = JSON.stringify(attachments);
 
-    var targetURL = 'https://slack.com/api/chat.postMessage?token=xoxp-33277585748-33238216051-33306678548-b0a6ea1979' + 
+    var targetURL = 'https://slack.com/api/chat.postMessage?token=TEST_TOKEN' + 
       '&channel=' + channel +  
       '&text=' + "New Chatter Post from Salesforce" +
       '&attachments=' + encodeURIComponent(attachments) + 
@@ -373,8 +373,8 @@ controller.setupWebserver(process.env.port,function(err,webserver) {
   
   webserver.post('/addFileComment', function(req, res){
     console.log(req);
-    //var targetURL = 'https://slack.com/api/files.comments.add?token=xoxp-33277585748-33462109169-33744710691-4232aafb55' +
-    var targetURL = 'https://slack.com/api/files.comments.add?token=xoxp-33277585748-33238216051-33306678548-b0a6ea1979' +
+    
+    var targetURL = 'https://slack.com/api/files.comments.add?token=TEST_TOKEN' +
     '&file=' + req.body.file_id + 
     '&comment=' + req.body.comment;
 
