@@ -1,0 +1,14 @@
+trigger Project_New on Project__c (after insert) {
+    
+    List<String> new_channels = new List<String>();
+    
+    for(Project__c p: Trigger.New){
+        if(p.Slack_Channel__c != null && p.Slack_Channel__c  != ''){
+            new_channels.add(p.Slack_Channel__c);
+        }
+    }
+    
+    if(new_channels.size() > 0){
+        Slack_Integration.postChannels(new_channels);
+    }
+}

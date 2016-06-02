@@ -1,0 +1,14 @@
+trigger Project_File_Comment_New on FeedComment (after insert) {
+    
+    List<Project_File__c> projectFiles = new List<Project_File__c>();
+    projectFiles = [Select Id, File_Id__c, Post_Id__c From Project_File__c Where Post_Id__c != null];
+    System.debug(projectFiles.size());
+    
+    for(FeedComment fc: Trigger.New){
+        for(Project_File__c pf: projectFiles){
+            if(fc.FeedItemId == pf.Post_Id__c){
+                Slack_Integration.addFileComment(pf.File_Id__c, fc.CommentBody);
+            }
+        }
+    }
+}

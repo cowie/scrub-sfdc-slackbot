@@ -1,0 +1,15 @@
+trigger ChatterPost_New on FeedItem (after insert) {
+    
+    String slackIndicator = '#slack';
+    List<Project__c> allProjects = new List<Project__c>();
+    List<FeedItem> postsToPush = new List<FeedItem>();
+    allProjects = [Select Id, Name, Slack_Channel_Id__c, Status__c From Project__c Where Slack_Channel_Id__c != null];
+    
+    for(FeedItem post: Trigger.New){
+        for(Project__c project: allProjects){
+            if(post.ParentId == project.Id &&  post.Body.indexOf(slackIndicator) != -1){
+                Slack_Integration.postChatterFeed(post.Body, project.Slack_Channel_Id__c, UserInfo.getName(), post.Id, project.Name, project.Id, 'Project Status', project.Status__c);
+            }
+        }
+    }
+}

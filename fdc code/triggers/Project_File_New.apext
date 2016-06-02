@@ -1,0 +1,9 @@
+trigger Project_File_New on Project_File__c (after insert) {
+    
+    for(Project_File__c pf: Trigger.New){
+        if(pf.File_Link__c != null && pf.File_Link__c != '' &&  pf.Project__c != null){
+            String fileName = pf.File_Name__c != '' ?  pf.File_Name__c : 'Attachment';
+            Slack_Integration.attachFile(fileName, pf.File_Type__c, pf.Project__c, pf.File_Link__c, pf.Id, pf.Username__c);
+        }
+    }
+}

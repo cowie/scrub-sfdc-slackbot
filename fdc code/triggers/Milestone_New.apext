@@ -1,0 +1,19 @@
+trigger Milestone_New on Milestone__c (after insert, after update) {
+    
+    List<Project__c> allProjects = new List<Project__c>();
+    allProjects = [Select Id, Name, Slack_Channel_Id__c, Status__c From Project__c Where Slack_Channel_Id__c != null];
+    
+    for(Milestone__c milestone: Trigger.New){
+        for(Project__c project: allProjects){
+            if(milestone.Project__c == project.Id){
+                //Milestone__c old = Trigger.NewMap.get(milestone.id);
+                if(milestone.Actual_End_Date__c != null && milestone.Actual_Start_Date__c != null){
+                    //String status = milestone.Date__c.format() ;
+                    string status = milestone.Actual_Start_Date__c.format() + ' - ' + milestone.Actual_End_Date__c.format();
+                    Slack_Integration.postFeed('', project.Slack_Channel_Id__c, UserInfo.getName(), UserInfo.getUserId(), milestone.Name, milestone.Id, 'New Milestone Actual Dates', status);    
+                }
+                
+            }
+        }
+    }
+}
