@@ -11,3 +11,7 @@ Assumes a model of the API User from Heroku making changes that take place in SF
 2) Single API User spoofing other users (via modify system fields permission) - Much simpler buildout, but unable to process permission differences between Slack users. 
 
 Both would allow you to keep a valid user table, and probably start up an Admin table as well for maintenance. This means you could potentially invite external/partner users into your Slack channel, whether SFDC users or not, and they would be unable to process commands on the bot due to missing perms.
+
+Requires a few Heroku Env Vars - 
+CLIENTID / CLIENTSECRET for the Slack Oauth Dance
+REDIS_URL for using local Redis store to host a user list, otherwise comment out lines 8/9 and flip 38 to 37.
